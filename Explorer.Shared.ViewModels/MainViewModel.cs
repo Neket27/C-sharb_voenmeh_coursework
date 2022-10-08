@@ -1,27 +1,62 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using JetBrains.Annotations;
+using System.Windows.Input;
 
 namespace Explorer.Shared.ViewModels;
 
-public class MainViewModel: BaseViewModel
+public class MainViewModel
 {
     #region publicProperties
 
     public string MainDiskName { get; set; }
     public string FilePath { get; set; }
-    public ObservableCollection<string> DerectoriesAndFiles { get; set; } = new ObservableCollection<string>();
+    public FileEntityViewModel SelectedFileEntity{ get; set; }
+    public ObservableCollection<FileEntityViewModel> DerectoriesAndFiles { get; set; } = new ObservableCollection<FileEntityViewModel>();
+
+    #endregion
+
+    #region Commands 
+    public ICommand OpenCommand { get; set; }
+    
+
 
     #endregion
 
     #region Constructor
+
     public MainViewModel()
     {
-        MainDiskName = Environment.SystemDirectory;// Передача системной дириктории 
-        foreach (var logicalDrive in Directory.GetLogicalDrives())
+        OpenCommand = new DelegateCommand(Open);
+        MainDiskName = Environment.SystemDirectory; // Передача системной дириктории 
+        foreach (var logicalDrive in Directory.GetLogicalDrives()) // Считываем все диски пк в коллекцию
         {
-            DerectoriesAndFiles.Add(logicalDrive);
+            DerectoriesAndFiles.Add(new DirectoryViewModel(logicalDrive));
         }
     }
+
     #endregion
+
+    #region Commands Methods
+
+    private void Open(object parameter)
+    {
+        if (parameter is DirectoryViewModel directoryViewModel)
+        {
+            FilePath = directoryViewModel.Name;
+            DerectoriesAndFiles.Clear();
+            var DirectoryInfo = new DirectoryInfo(FilePath);
+
+            foreach (var directory in DirectoryInfo.GetDirectories())
+            {
+                DerectoriesAndFiles.Add(new DirectoryViewModel(directory.FullName));
+            }
+
+            foreach (var FileInfo in DirectoryInfo.GetFiles())
+            {
+                DerectoriesAndFiles.Add(new FileViewModel(FileInfo));
+            }
+        }
+    }
+
+    #endregion
+    
 }

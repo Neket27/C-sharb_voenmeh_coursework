@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Проводник" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">  <!-- Открытие окна поцентру -->
@@ -32,12 +33,32 @@
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <TextBox Text="{Binding FilePath}"></TextBox>
-                <ListBox Grid.Row="1" ItemsSource="{Binding DerectoriesAndFiles}" />
+                <TextBox Text="{Binding FilePath}" />
+                <ListBox Grid.Row="1" 
+                         ItemsSource="{Binding DerectoriesAndFiles}"
+                         SelectedItem="{Binding SelectedFileEntity}">
+
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="MouseDoubleClick">
+                            <b:InvokeCommandAction
+                                Command="{Binding OpenCommand}"
+                                CommandParameter="{Binding SelectedFileEntity}"></b:InvokeCommandAction>
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock Text="{Binding Name}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
                 <!-- <TextBlock Text="{Binding MainDiskName}"></TextBlock> -->
             </Grid>
         </Grid>
