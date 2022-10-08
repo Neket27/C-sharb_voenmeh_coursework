@@ -5,8 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:C_sharb_voenmeh_coursework"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Проводник" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">  <!-- Открытие окна поцентру -->
+    
     <Grid>
+        
+        <Grid.ColumnDefinitions>
+            <!-- 2 колонки -->
+            <ColumnDefinition Width="100*"></ColumnDefinition> <!-- колонка занимает 100px адаптивным дизайном; * - это свойство авто -->
+            <ColumnDefinition Width="500*"></ColumnDefinition>
+            <ColumnDefinition Width="200*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Background="Gray">
+            <Button Content="Desktop"></Button>
+            <Button Content="Downloads"></Button>
+            <Button Content="Видео"></Button>
+            <Button Content="Документы"></Button>
+            <Button Content="Изображение"></Button>
+            <Button Content="Музыка"></Button>
+            <Button Content="Windows (C:)"></Button>
+        </StackPanel>
+        
+        <Grid Grid.Column="1">
+            <TextBlock>jjjjjj</TextBlock>
+            <!-- <TextBlock Text="{Binding MainDiskName}"></TextBlock> -->
+        </Grid>
+        
+        <Grid Column="2">
+            <TextBlock Text="{Binding MainDiskName}"></TextBlock>
+        </Grid>
 
     </Grid>
 </Window>

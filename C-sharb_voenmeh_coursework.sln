@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C-sharb_voenmeh_coursework", "C-sharb_voenmeh_coursework\C-sharb_voenmeh_coursework.csproj", "{6378B27E-B5D2-4BAD-AB5F-E196CFE9C32C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{5A56BBC1-55BF-46A2-9906-BF3046A7901F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{E548FFE5-9E89-4269-9E22-EECDB8651DF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Explorer.Shared.ViewModels", "Explorer.Shared.ViewModels\Explorer.Shared.ViewModels.csproj", "{B60B13C0-7A12-4FF5-BDEC-6690D2EEEF88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +18,12 @@ Global
 		{6378B27E-B5D2-4BAD-AB5F-E196CFE9C32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6378B27E-B5D2-4BAD-AB5F-E196CFE9C32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6378B27E-B5D2-4BAD-AB5F-E196CFE9C32C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B60B13C0-7A12-4FF5-BDEC-6690D2EEEF88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B60B13C0-7A12-4FF5-BDEC-6690D2EEEF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B60B13C0-7A12-4FF5-BDEC-6690D2EEEF88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B60B13C0-7A12-4FF5-BDEC-6690D2EEEF88}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B60B13C0-7A12-4FF5-BDEC-6690D2EEEF88} = {5A56BBC1-55BF-46A2-9906-BF3046A7901F}
 	EndGlobalSection
 EndGlobal
