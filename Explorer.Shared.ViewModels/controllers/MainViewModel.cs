@@ -41,7 +41,8 @@ public class MainViewModel
     {
         if (parameter is DirectoryViewModel directoryViewModel)
         {
-            FilePath = directoryViewModel.Name;
+
+            FilePath = directoryViewModel.FullName;
             DerectoriesAndFiles.Clear();
             var DirectoryInfo = new DirectoryInfo(FilePath);
 

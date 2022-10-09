@@ -4,7 +4,7 @@ namespace Explorer.Shared.ViewModels;
 
 public class DelegateCommand : ICommand
 {
-    private readonly Action<object> _open;
+    private readonly Action<object> _open; //readonly - присвоить значение можно только в конструкторе этого класса
     public DelegateCommand(Action<object> open)
     {
         _open = open;
