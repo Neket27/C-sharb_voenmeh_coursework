@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Explorer.Shared.ViewModels;
 
-public class MainViewModel
+public class MainViewModel:BaseViewModel
 {
     #region publicProperties
 
