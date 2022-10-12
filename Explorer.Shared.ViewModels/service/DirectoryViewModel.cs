@@ -7,9 +7,9 @@ public class DirectoryViewModel : FileEntityViewModel
         FullName = directoryName;
     }
 
-    public DirectoryViewModel(DirectoryInfo directoryName):base(directoryName.Name)
+    public DirectoryViewModel(DirectoryInfo directoryName):base(directoryName.Name) // в базовый конструктор отдаём только имя, а в путь записываем полный путь
     {
-        FullName = directoryName.Name;
+        FullName = directoryName.FullName; 
     }
     
 }

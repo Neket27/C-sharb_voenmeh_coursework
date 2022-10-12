@@ -7,17 +7,13 @@ public class MainViewModel:BaseViewModel
 {
     #region publicProperties
 
-    public string MainDiskName { get; set; }
-    public string FilePath { get; set; }
-    public FileEntityViewModel SelectedFileEntity{ get; set; }
-    public ObservableCollection<FileEntityViewModel> DerectoriesAndFiles { get; set; } = new ObservableCollection<FileEntityViewModel>();
-
+    public ObservableCollection<FileEntityViewModel> DirectoriesAndFiles { get; set; } = new ObservableCollection<FileEntityViewModel>();
+    public ObservableCollection<DirectoryTabItemViewModel>DirectoryTabItemViewModels { get; set; }=new ObservableCollection<DirectoryTabItemViewModel>();
+    public DirectoryTabItemViewModel CurrentDirectoryTabItem { get; set; }
+    
     #endregion
 
     #region Commands 
-    public ICommand OpenCommand { get; set; }
-    
-
 
     #endregion
 
@@ -25,39 +21,41 @@ public class MainViewModel:BaseViewModel
 
     public MainViewModel()
     {
-        OpenCommand = new DelegateCommand(Open);
-        MainDiskName = Environment.SystemDirectory; // Передача системной дириктории 
-        foreach (var logicalDrive in Directory.GetLogicalDrives()) // Считываем все диски пк в коллекцию
-        {
-            DerectoriesAndFiles.Add(new DirectoryViewModel(logicalDrive));
-        }
+        AddTabItemViewModel();
+        AddTabItemViewModel();
+        CurrentDirectoryTabItem = DirectoryTabItemViewModels.FirstOrDefault(); //показываем вкладку модели(первая в списке поумолчанию будет)
     }
 
     #endregion
 
-    #region Commands Methods
 
-    private void Open(object parameter)
+    #region Private Methods
+
+    private void AddTabItemViewModel()
     {
-        if (parameter is DirectoryViewModel directoryViewModel)
+        var vm = new DirectoryTabItemViewModel();
+        vm.Closed += Vm_Closed;
+        
+        DirectoryTabItemViewModels.Add(vm);
+        }
+
+    private void Vm_Closed(object? sender, EventArgs e)
+    {
+       if(sender is DirectoryTabItemViewModel directoryTabItemViewModel)
         {
-
-            FilePath = directoryViewModel.FullName;
-            DerectoriesAndFiles.Clear();
-            var DirectoryInfo = new DirectoryInfo(FilePath);
-
-            foreach (var directory in DirectoryInfo.GetDirectories())
-            {
-                DerectoriesAndFiles.Add(new DirectoryViewModel(directory.FullName));
-            }
-
-            foreach (var FileInfo in DirectoryInfo.GetFiles())
-            {
-                DerectoriesAndFiles.Add(new FileViewModel(FileInfo));
-            }
+            CloseTab(directoryTabItemViewModel);
         }
     }
 
+    private void CloseTab(DirectoryTabItemViewModel directoryTabItemViewModel)
+    {
+        directoryTabItemViewModel.Closed -= Vm_Closed; //отписываемся от модели (нужно для корректной работы сборщика мусора)
+        DirectoryTabItemViewModels.Remove(directoryTabItemViewModel);
+        CurrentDirectoryTabItem = DirectoryTabItemViewModels.FirstOrDefault();
+    }
+
     #endregion
-    
+
+
+
 }
