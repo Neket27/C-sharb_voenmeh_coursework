@@ -3,16 +3,18 @@ using System.Windows.Input;
 
 namespace Explorer.Shared.ViewModels
 {
-    public class DirectoryTabItemViewModel:BaseViewModel
+    public class DirectoryTabItemViewModel : BaseViewModel
     {
         #region publicProperties
 
         public string MainDiskName { get; set; }
         public string FilePath { get; set; }
         public string Title { get; set; } = "Мой компьютер";
+
         public FileEntityViewModel SelectedFileEntity { get; set; }
+        public ObservableCollection<FileEntityViewModel> DirectoriesAndFilesLeftPanel { get; set; } = new ObservableCollection<FileEntityViewModel>();
         public ObservableCollection<FileEntityViewModel> DirectoriesAndFiles { get; set; } = new ObservableCollection<FileEntityViewModel>();
-        
+
 
         #endregion
 
@@ -40,11 +42,42 @@ namespace Explorer.Shared.ViewModels
             {
                 DirectoriesAndFiles.Add(new DirectoryViewModel(logicalDrive));
             }
+
+            FileEntityViewModel DirDesktop = new DirectoryViewModel("C:\\Users\\Nikita\\Desktop");
+            FileEntityViewModel DirVideo = new DirectoryViewModel("C:\\Users\\Nikita\\Videos");
+            FileEntityViewModel DirDocumet = new DirectoryViewModel("C:\\Users\\Nikita\\Documents");
+            FileEntityViewModel DirPictures = new DirectoryViewModel("C:\\Users\\Nikita\\Pictures");
+            FileEntityViewModel DirMusic = new DirectoryViewModel("C:\\Users\\Nikita\\Music");
+
+            DirDesktop.Name = "Рабочий стол";
+            DirVideo.Name = "Видео";
+            DirDocumet.Name = "Документы";
+            DirPictures.Name = "Изображения";
+            DirMusic.Name = "Музыка";
+            DirectoriesAndFilesLeftPanel.Add(DirDesktop);
+            DirectoriesAndFilesLeftPanel.Add(DirVideo);
+            DirectoriesAndFilesLeftPanel.Add(DirPictures);
+            DirectoriesAndFilesLeftPanel.Add(DirMusic);
+
+        }
+
+        public static string StrOut, StrIn;
+        public static void GetPath(string path)
+        {
+            string[] astrFolders = Directory.GetFileSystemEntries(@path);
+            foreach (string file in astrFolders)
+            {
+                if (Directory.Exists(@file)) { GetPath(@file); }
+                else { FileInfo FN = new FileInfo(@file); File.Copy(FN.FullName, @StrIn + "\\" + FN.Name, true); }
+            }
+
         }
 
         #endregion
 
         #region Commands Methods
+
+
 
         private void Open(object parameter)
         {
