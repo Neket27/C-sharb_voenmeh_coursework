@@ -12,4 +12,4 @@ public class DirectoryViewModel : FileEntityViewModel
         FullName = directoryName.FullName; 
     }
     
-}
+} 

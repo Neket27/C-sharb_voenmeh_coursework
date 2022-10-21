@@ -21,8 +21,10 @@ public class MainViewModel:BaseViewModel
 
     public MainViewModel()
     {
-        AddTabItemViewModel();
-        AddTabItemViewModel();
+         AddTabItemViewModel();
+          AddTabItemViewModel();
+        
+
         CurrentDirectoryTabItem = DirectoryTabItemViewModels.FirstOrDefault(); //показываем вкладку модели(первая в списке поумолчанию будет)
     }
 
