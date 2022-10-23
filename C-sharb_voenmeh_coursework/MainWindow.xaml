@@ -8,9 +8,13 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         Title="Проводник" Height="450" Width="800"
         x:Name="Window"
-    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf" xmlns:convertores="clr-namespace:C_sharb_voenmeh_coursework.Convertores">
     <Window.Resources>
-     
+
+
+        <convertores:FileEntityToImageConverter x:Key="ToImageConverter"></convertores:FileEntityToImageConverter>
+        
+
     </Window.Resources>
     
     
@@ -160,7 +164,9 @@
                         </Grid.ColumnDefinitions>
 
                         <Grid  Grid.Column="0"  Width="20" Height="25" Background="Crimson">
-                            <Image VerticalAlignment="Top" Source="Resource/Ico/folder.ico"></Image>
+                            <Image Source="{Binding .,Converter={StaticResource ToImageConverter}}"></Image>
+
+                            <!--<Image Grid.Column="0" Source="Resource/Ico/folder.ico" Width="20" Height="20"></Image>-->
                         </Grid>
               
                         <TextBlock Background="CadetBlue" Height="20" Grid.Column="1" Text="{Binding DirectoryName}" />
