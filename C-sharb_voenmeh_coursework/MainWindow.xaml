@@ -7,7 +7,13 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         Title="Проводник" Height="450" Width="800"
-        x:Name="Window">
+        x:Name="Window"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
+    <Window.Resources>
+     
+    </Window.Resources>
+    
+    
     <Grid Background="#ffdadada">
 
         <Grid.RowDefinitions>
@@ -81,6 +87,62 @@
                  Grid.RowSpan="2"
                  ItemsSource="{Binding DirectoriesAndFiles}"
                  SelectedItem="{Binding SelectedFileEntity}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                    <Setter Property="Padding" Value="8"/>
+                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                    <Setter Property="Width" Value="400"/>
+                    <Setter Property="Height" Value="50"/>
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Margin" Value="3"/>
+
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <Border Background="{TemplateBinding Background}" 
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        ClipToBounds="{TemplateBinding ClipToBounds}" 
+                                        Margin="{TemplateBinding Margin}">
+                                    
+                                    
+                                    <Grid>
+                                        <Border x:Name="MouseOverBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" Opacity="0"/>
+                                        <Border x:Name="SelectedBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" Opacity="0"/>
+                                        <wpf:Ripple x:Name="Ripple" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" Focusable="False" Feedback="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" RecognizesAccessKey="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        
+                                    </Grid>
+                                    
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value=".56"/>
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource Self}}" Value="False">
+                                        <Setter Property="Visibility" TargetName="MouseOverBorder" Value="Collapsed"/>
+                                        <Setter Property="Feedback" TargetName="Ripple" Value="Transparent"/>
+                                        <Setter Property="Visibility" TargetName="SelectedBorder" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                    <!--<Setter Value="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>-->
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel>
+                        
+                    </WrapPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
 
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="MouseDoubleClick">
@@ -92,13 +154,21 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <TextBlock Text="{Binding DirectoryName}" />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"></ColumnDefinition>
+                            <ColumnDefinition Width="400"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid  Grid.Column="0"  Width="20" Height="25" Background="Crimson">
+                            <Image VerticalAlignment="Top" Source="Resource/Ico/folder.ico"></Image>
+                        </Grid>
+              
+                        <TextBlock Background="CadetBlue" Height="20" Grid.Column="1" Text="{Binding DirectoryName}" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
 
-        <TextBlock Grid.Column="1" Grid.Row="2" x:Name="label2"></TextBlock>
+        </ListBox>
 
 
     </Grid>
