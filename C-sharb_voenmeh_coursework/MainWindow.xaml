@@ -15,10 +15,11 @@
         <convertores:FileEntityToImageConverter x:Key="ToImageConverter"></convertores:FileEntityToImageConverter>
         
 
+
     </Window.Resources>
-    
-    
-    <Grid Background="#ffdadada">
+
+
+    <Grid Background="#090d24">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
@@ -27,7 +28,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"></ColumnDefinition>
+            <ColumnDefinition Width="180" ></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
@@ -38,11 +39,47 @@
             <Button Width="50" Height="30" FontSize="15px" Content="O"></Button>
         </StackPanel>
 
-        <ListBox Background="#ebd7f7" 
+        <ListBox Background="#090d24" 
                  Grid.Row="1" Grid.Column="0" 
                  Grid.RowSpan="2" 
                  ItemsSource="{Binding DirectoriesAndFilesLeftPanel}"
                  SelectedItem="{Binding SelectedFileEntity}">
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                    <Setter Property="Padding" Value="8"/>
+                    <Setter Property="SnapsToDevicePixels" Value="True"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ClipToBounds="{TemplateBinding ClipToBounds}" Margin="{TemplateBinding Margin}">
+                                    <Grid>
+                                        <Border x:Name="MouseOverBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" Opacity="0"/>
+                                        <Border x:Name="SelectedBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" Opacity="0"/>
+                                        <wpf:Ripple x:Name="Ripple" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" Focusable="False" Feedback="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" RecognizesAccessKey="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value=".56"/>
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource Self}}" Value="False">
+                                        <Setter Property="Visibility" TargetName="MouseOverBorder" Value="Collapsed"/>
+                                        <Setter Property="Feedback" TargetName="Ripple" Value="Transparent"/>
+                                        <Setter Property="Visibility" TargetName="SelectedBorder" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                    <!--<Setter Value="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>-->
+                </Style>
+            </ListBox.ItemContainerStyle>
+            
             
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="MouseDoubleClick">
@@ -53,15 +90,29 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock FontSize="14"  Text="{Binding Name}"></TextBlock>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid  Grid.Column="0" Margin="10,10"  Width="30" Height="35">
+                            <Image  Source="{Binding .,Converter={StaticResource ToImageConverter}}"></Image>
+                        </Grid>
+
+                        <TextBlock Foreground="#e6e8f2" VerticalAlignment="Center" FontSize="14" Grid.Column="1"  Text="{Binding Name}"></TextBlock>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+
+           
 
         </ListBox>
 
         <TextBox Grid.Row="0" 
                  Grid.Column="1" 
-                 Background="Bisque" 
+                 Background="#090d24" 
+                 Foreground="#e6e8f2"
                  Text="{Binding FilePath}" 
                  x:Name="PathFile" 
                   >
@@ -98,9 +149,9 @@
                     <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
                     <Setter Property="Padding" Value="8"/>
                     <Setter Property="SnapsToDevicePixels" Value="True"/>
-                    <Setter Property="Width" Value="400"/>
-                    <Setter Property="Height" Value="50"/>
-                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="Height" Value="auto"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
                     <Setter Property="BorderThickness" Value="1"/>
                     <Setter Property="Margin" Value="3"/>
 
@@ -159,17 +210,17 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30"></ColumnDefinition>
-                            <ColumnDefinition Width="400"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <Grid  Grid.Column="0"  Width="20" Height="25" Background="Crimson">
-                            <Image Source="{Binding .,Converter={StaticResource ToImageConverter}}"></Image>
+                        <Grid  Grid.Column="0" Margin="10,10"  Width="30" Height="35">
+                            <Image VerticalAlignment="Top" Source="{Binding .,Converter={StaticResource ToImageConverter}}"></Image>
 
                             <!--<Image Grid.Column="0" Source="Resource/Ico/folder.ico" Width="20" Height="20"></Image>-->
                         </Grid>
-              
-                        <TextBlock Background="CadetBlue" Height="20" Grid.Column="1" Text="{Binding DirectoryName}" />
+
+                        <TextBlock Foreground="#e6e8f2" FontSize="14" Height="20" Grid.Column="1" Text="{Binding DirectoryName}" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

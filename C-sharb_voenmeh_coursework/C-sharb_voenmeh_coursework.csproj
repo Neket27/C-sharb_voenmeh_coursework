@@ -10,7 +10,14 @@
 
     <ItemGroup>
       <None Remove="folder2.jpg" />
+      <None Remove="Resource\Ico\audio-player.ico" />
+      <None Remove="Resource\Ico\documents.ico" />
+      <None Remove="Resource\Ico\folder-desktop.ico" />
       <None Remove="Resource\Ico\folder.ico" />
+      <None Remove="Resource\Ico\image-viewer.ico" />
+      <None Remove="Resource\Ico\multimedia.ico" />
+      <None Remove="Resource\Ico\PC.ico" />
+      <None Remove="Resource\Ico\text-editor.ico" />
     </ItemGroup>
 
     <ItemGroup>
@@ -25,8 +32,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Resource Include="Resource\Ico\audio-player.ico" />
+      <Resource Include="Resource\Ico\documents.ico" />
+      <Resource Include="Resource\Ico\folder-desktop.ico" />
       <Resource Include="Resource\Ico\folder2.jpg" />
       <Resource Include="Resource\Ico\folder.ico" />
+      <Resource Include="Resource\Ico\image-viewer.ico" />
+      <Resource Include="Resource\Ico\multimedia.ico" />
+      <Resource Include="Resource\Ico\pc.ico" />
+      <Resource Include="Resource\Ico\text-editor.ico" />
     </ItemGroup>
 
 </Project>

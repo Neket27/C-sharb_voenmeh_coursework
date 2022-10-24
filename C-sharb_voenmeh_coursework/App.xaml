@@ -7,7 +7,13 @@
         <ResourceDictionary>
 
             <Image x:Key="folder" Source="Resource/Ico/folder.ico"></Image>
-            <Image x:Key="file" Source="Resource/Ico/folder2.jpg"></Image>
+            <Image x:Key="text-editor" Source="Resource/Ico/text-editor.ico"></Image>
+            <Image x:Key="folder-desktop" Source="Resource/Ico/folder-desktop.ico"></Image>
+            <Image x:Key="documents" Source="Resource/Ico/multimedia.ico"></Image>
+            <Image x:Key="multimedia" Source="Resource/Ico/documents.ico"></Image>
+            <Image x:Key="image-viewer" Source="Resource/Ico/image-viewer.ico"></Image>
+            <Image x:Key="audio-player" Source="Resource/Ico/audio-player.ico"></Image>
+            <Image x:Key="pc" Source="Resource/Ico/pc.ico"></Image>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
