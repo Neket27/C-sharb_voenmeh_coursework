@@ -14,6 +14,7 @@
             <Image x:Key="image-viewer" Source="Resource/Ico/image-viewer.ico"></Image>
             <Image x:Key="audio-player" Source="Resource/Ico/audio-player.ico"></Image>
             <Image x:Key="pc" Source="Resource/Ico/pc.ico"></Image>
+            <Image x:Key="file-manager" Source="Resource/Ico/file-manager.ico"></Image>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />

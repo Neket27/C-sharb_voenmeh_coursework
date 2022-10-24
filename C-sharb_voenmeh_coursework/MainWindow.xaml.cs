@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using app;
 
 
@@ -9,6 +10,7 @@ namespace C_sharb_voenmeh_coursework
         public MainWindow()
         {
             DataContext = new MainApp();
+
             InitializeComponent();
            
         }
