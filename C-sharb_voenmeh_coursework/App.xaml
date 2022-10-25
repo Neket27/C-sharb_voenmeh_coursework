@@ -6,15 +6,15 @@
     <Application.Resources>
         <ResourceDictionary>
 
-            <Image x:Key="folder" Source="Resource/Ico/folder.ico"></Image>
-            <Image x:Key="text-editor" Source="Resource/Ico/text-editor.ico"></Image>
-            <Image x:Key="folder-desktop" Source="Resource/Ico/folder-desktop.ico"></Image>
-            <Image x:Key="documents" Source="Resource/Ico/multimedia.ico"></Image>
-            <Image x:Key="multimedia" Source="Resource/Ico/documents.ico"></Image>
-            <Image x:Key="image-viewer" Source="Resource/Ico/image-viewer.ico"></Image>
-            <Image x:Key="audio-player" Source="Resource/Ico/audio-player.ico"></Image>
-            <Image x:Key="pc" Source="Resource/Ico/pc.ico"></Image>
-            <Image x:Key="file-manager" Source="Resource/Ico/file-manager.ico"></Image>
+            <Image x:Key="folder" Source="Resource/Icons/folder.ico"></Image>
+            <Image x:Key="text-editor" Source="Resource/Icons/text-editor.ico"></Image>
+            <Image x:Key="folder-desktop" Source="Resource/Icons/LeftPanel/folder-desktop.ico"></Image>
+            <Image x:Key="documents" Source="Resource/Icons/LeftPanel/multimedia.ico"></Image>
+            <Image x:Key="multimedia" Source="Resource/Icons/LeftPanel/documents.ico"></Image>
+            <Image x:Key="image-viewer" Source="Resource/Icons/LeftPanel/image-viewer.ico"></Image>
+            <Image x:Key="audio-player" Source="Resource/Icons/LeftPanel/audio-player.ico"></Image>
+            <Image x:Key="pc" Source="Resource/Icons/LeftPanel/pc.ico"></Image>
+            <Image x:Key="file-manager" Source="Resource/Icons/file-manager.ico"></Image>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />

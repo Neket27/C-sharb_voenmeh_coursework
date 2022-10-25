@@ -15,7 +15,7 @@
         Visibility="Visible" 
         WindowStyle="SingleBorderWindow" 
         Background="#FF110202" 
-        Icon="/Resource/Ico/file-manager.ico" 
+        Icon="/Resource/Icons/file-manager.ico" 
         ResizeMode="CanResize" 
         WindowStartupLocation="CenterScreen" 
         FontWeight="Normal">

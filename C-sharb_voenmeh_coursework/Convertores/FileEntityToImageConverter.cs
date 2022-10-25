@@ -1,11 +1,16 @@
 ﻿using app.models;
+using C_sharb_voenmeh_coursework.Actions;
 using Explorer.Shared.ViewModels;
+using SharpVectors.Converters;
+using SharpVectors.Renderers.Wpf;
 using System;
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace C_sharb_voenmeh_coursework.Convertores
 {
@@ -63,8 +68,32 @@ namespace C_sharb_voenmeh_coursework.Convertores
                         return img.Source;
                 }
             }
-            else if(value is FilePC)
+            else if(value is FilePC filePC)
             {
+                var extension = new FileInfo(filePC.FullName).Extension;
+                //var imagePath = Path.GetDirectoryName(filePC.FullName);
+                var imagePath = ExtensionToImageFileConverter.GetImagePath(extension);
+                var settings = new WpfDrawingSettings
+                {
+                    TextAsGeometry = false,
+                    IncludeRuntime = true,
+                };
+                
+
+                if (imagePath.Extension.ToLower() == ".svg")
+                {
+                    var converter = new FileSvgReader(settings);
+                    var drawing = converter.Read(imagePath.FullName);
+                    if(drawing != null)
+                        return new DrawingImage(drawing);
+                }
+                else
+                {
+                    var bitmapSourse = new BitmapImage(new Uri(imagePath.FullName));
+                    return bitmapSourse;
+                }
+
+
                 var resource = Application.Current.TryFindResource("text-editor");
 
                 if (resource is Image img)
