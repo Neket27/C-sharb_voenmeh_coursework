@@ -14,10 +14,7 @@
       <None Remove="Resource\Icons\documents.ico" />
       <None Remove="Resource\Icons\folder-desktop.ico" />
       <None Remove="Resource\Icons\folder.ico" />
-      <None Remove="Resource\Icons\image-viewer.ico" />
-      <None Remove="Resource\Icons\multimedia.ico" />
       <None Remove="Resource\Icons\PC.ico" />
-      <None Remove="Resource\Icons\text-editor.ico" />
     </ItemGroup>
 
     <ItemGroup>
@@ -41,14 +38,43 @@
       <Resource Include="Resource\Icons\LeftPanel\image-viewer.ico" />
       <Resource Include="Resource\Icons\LeftPanel\multimedia.ico" />
       <Resource Include="Resource\Icons\LeftPanel\pc.ico" />
-      <Resource Include="Resource\Icons\text-editor.ico" />
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="icons.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resource\Icons\audio.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="Resource\Icons\folder2.jpg">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Resource\Icons\image-viewer.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resource\Icons\multimedia.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resource\Icons\org.libreoffice.LibreOffice-calc.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resource\Icons\org.libreoffice.LibreOffice-impress.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resource\Icons\org.libreoffice.LibreOffice-writer.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resource\Icons\qvidcap.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="Resource\Icons\system-windows.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resource\Icons\text-editor.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Resource\Icons\x-pdf.ico">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

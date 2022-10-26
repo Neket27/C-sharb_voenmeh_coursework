@@ -1,0 +1,18 @@
+{
+  "Icons": {
+    ".exe": "system-windows.ico",
+    ".dll": "qvidcap.ico",
+    ".txt": "text-editor.ico",
+    ".mp3": "audio.ico",
+    ".mp4": "multimedia.ico",
+    ".jpg": "image-viewer.ico",
+    ".png": "image-viewer.ico",
+    ".pdf": "x-pdf.ico",
+    ".doc": "org.libreoffice.LibreOffice-writer.ico",
+    ".docx": "org.libreoffice.LibreOffice-writer.ico",
+    ".xlsx": "org.libreoffice.LibreOffice-calc.ico",
+    ".pptx": "org.libreoffice.LibreOffice-impress.ico"
+
+
+  }
+}

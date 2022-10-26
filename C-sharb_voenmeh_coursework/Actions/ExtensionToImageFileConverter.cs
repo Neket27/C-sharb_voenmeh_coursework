@@ -15,15 +15,17 @@ namespace C_sharb_voenmeh_coursework.Actions
 
         static ExtensionToImageFileConverter()
         {
-            var settings = new IconsSettings
-            {
-                Icons =new Dictionary<string, string>
-                {
-                    {".exe","system-windows.ico"}
-                }
+           //var applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
+           // var iconPath = new DirectoryInfo(Path.Combine(applicationDirectory, "Resource/Icons"));
+           // var settings = new IconsSettings();
 
-            };
-            IconsSettings.Save(settings, "icons.json");
+           // foreach (var fileInfo in iconPath.GetFiles())
+           // {
+           //     var name = fileInfo.Name;
+
+           //     var extension = name.Substring(4, name.Length - 8);
+           //     settings.Icons.Add("." + extension, name);
+           // }
 
 
             _settings = IconsSettings.Open("icons.json");
@@ -67,7 +69,7 @@ namespace C_sharb_voenmeh_coursework.Actions
 
         public static void Save(IconsSettings settings, string path)
         {
-            var options = new JsonSerializerOptions
+            var options = new JsonSerializerOptions()
             {
                 WriteIndented = true,
             };
