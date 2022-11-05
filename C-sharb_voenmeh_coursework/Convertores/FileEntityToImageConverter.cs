@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
 namespace C_sharb_voenmeh_coursework.Convertores
 {
@@ -20,86 +21,94 @@ namespace C_sharb_voenmeh_coursework.Convertores
         {
             var image = new Image();
 
-
-
             if (value is DirectoryPC directoryPC)
             {
-                if(directoryPC.Name == "Этот компьютер")
+                switch (directoryPC.Name)
                 {
-                    var resource = Application.Current.TryFindResource("pc");
-                    if (resource is Image img)
-                        return img.Source;
-                }
-                else if (directoryPC.Name == "Рабочий стол")
-                {
-                    var resource = Application.Current.TryFindResource("folder-desktop");
-                    if (resource is Image img)
-                        return img.Source;
-                }
-                else if (directoryPC.Name == "Видео")
-                {
-                    var resource = Application.Current.TryFindResource("multimedia");
-                    if (resource is Image img)
-                        return img.Source;
-                }
-                else if (directoryPC.Name == "Документы")
-                {
-                    var resource = Application.Current.TryFindResource("documents");
-                    if (resource is Image img)
-                        return img.Source;
-                }
-                else if (directoryPC.Name == "Изображения")
-                {
-                    var resource = Application.Current.TryFindResource("image-viewer");
-                    if (resource is Image img)
-                        return img.Source;
+                    case "Этот компьютер":
+                        {
+                            Image resource = (Image)Application.Current.TryFindResource("pc");
+                            if (resource is Image img)
+                                return img.Source;
+                            break;
+                        }
 
-                } 
-                else if (directoryPC.Name == "Музыка")
-                {
-                    var resource = Application.Current.TryFindResource("audio-player");
-                    if (resource is Image img)
-                        return img.Source;
-                }
-                else
-                {
-                    var resource = Application.Current.TryFindResource("folder");
-                    if (resource is Image img)
-                        return img.Source;
+                    case "Рабочий стол":
+                        {
+                            Image resource = (Image)Application.Current.TryFindResource("folder-desktop");
+                            if (resource is Image img)
+                                return img.Source;
+                            break;
+                        }
+
+                    case "Видео":
+                        {
+                            Image resource = (Image)Application.Current.TryFindResource("multimedia");
+                            if (resource is Image img)
+                                return img.Source;
+                            break;
+                        }
+
+                    case "Документы":
+                        {
+                            Image resource = (Image)Application.Current.TryFindResource("documents");
+                            if (resource is Image img)
+                                return img.Source;
+                            break;
+                        }
+
+                    case "Изображения":
+                        {
+                            Image resource = (Image)Application.Current.TryFindResource("image-viewer");
+                            if (resource is Image img)
+                                return img.Source;
+                            break;
+                        }
+
+                    case "Музыка":
+                        {
+                            Image resource = (Image)Application.Current.TryFindResource("audio-player");
+                            if (resource is Image img)
+                                return img.Source;
+                            break;
+                        }
+
+                    default:
+                        {
+                            Image resource = (Image)Application.Current.TryFindResource("folder");
+                            if (resource is Image img)
+                                return img.Source;
+                            break;
+                        }
                 }
             }
             else if(value is FilePC filePC)
             {
-                var extension = new FileInfo(filePC.FullName).Extension;
-                //var imagePath = Path.GetDirectoryName(filePC.FullName);
-                var imagePath = ExtensionToImageFileConverter.GetImagePath(extension);
-                var settings = new WpfDrawingSettings
+                string extension = new FileInfo(filePC.FullName).Extension;
+                FileInfo imagePath = Ico.GetImagePath(extension);
+                WpfDrawingSettings settings = new WpfDrawingSettings()
                 {
                     TextAsGeometry = false,
                     IncludeRuntime = true,
                 };
-                
-
-                if (imagePath.Extension.ToLower() == ".svg")
-                {
-                    var converter = new FileSvgReader(settings);
-                    var drawing = converter.Read(imagePath.FullName);
-                    if(drawing != null)
-                        return new DrawingImage(drawing);
-                }
-                else
-                {
-                    var bitmapSourse = new BitmapImage(new Uri(imagePath.FullName));
+                //if (imagePath.Extension.ToLower() == ".doc")
+                //{
+                //    FileSvgReader converter = new FileSvgReader(settings);
+                //    DrawingGroup drawing = converter.Read(imagePath.FullName);
+                //    if (drawing != null)
+                //        return new DrawingImage(drawing);
+                //}
+                //else
+                //{
+                 BitmapImage bitmapSourse = new BitmapImage(new Uri(imagePath.FullName));
                     return bitmapSourse;
-                }
+                //}
 
-
-                var resource = Application.Current.TryFindResource("text-editor");
+                Image resource = (Image) Application.Current.TryFindResource("text-editor");
 
                 if (resource is Image img)
                     return img.Source;
             }
-
                      
             return image;
         }
@@ -108,5 +117,69 @@ namespace C_sharb_voenmeh_coursework.Convertores
         {
             throw new NotImplementedException();
         }
+
+
+        //private ImageSource? GetPathIconDirectoryPC(string name)
+        //{
+        //    switch (name)
+        //    {
+        //        case "Этот компьютер":
+        //            {
+        //                Image resource = (Image)Application.Current.TryFindResource("pc");
+        //                if (resource is Image img)
+        //                    return img.Source;
+        //                break;
+        //            }
+
+        //        case "Рабочий стол":
+        //            {
+        //                Image resource = (Image)Application.Current.TryFindResource("folder-desktop");
+        //                if (resource is Image img)
+        //                    return img.Source;
+        //                break;
+        //            }
+
+        //        case "Видео":
+        //            {
+        //                Image resource = (Image)Application.Current.TryFindResource("multimedia");
+        //                if (resource is Image img)
+        //                    return img.Source;
+        //                break;
+        //            }
+
+        //        case "Документы":
+        //            {
+        //                Image resource = (Image)Application.Current.TryFindResource("documents");
+        //                if (resource is Image img)
+        //                    return img.Source;
+        //                break;
+        //            }
+
+        //        case "Изображения":
+        //            {
+        //                Image resource = (Image)Application.Current.TryFindResource("image-viewer");
+        //                if (resource is Image img)
+        //                    return img.Source;
+        //                break;
+        //            }
+
+        //        case "Музыка":
+        //            {
+        //                Image resource = (Image)Application.Current.TryFindResource("audio-player");
+        //                if (resource is Image img)
+        //                    return img.Source;
+        //                break;
+        //            }
+
+        //        default:
+        //            {
+        //                Image resource = (Image)Application.Current.TryFindResource("folder");
+        //                if (resource is Image img)
+        //                    return img.Source;
+        //                break;
+        //            }
+        //    }
+        //    return null;
+        //}
+        }
     }
-}

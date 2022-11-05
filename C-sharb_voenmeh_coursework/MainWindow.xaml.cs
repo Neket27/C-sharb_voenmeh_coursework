@@ -10,7 +10,7 @@ namespace C_sharb_voenmeh_coursework
         public MainWindow()
         {
             DataContext = new MainApp();
-
+            
             InitializeComponent();
            
         }

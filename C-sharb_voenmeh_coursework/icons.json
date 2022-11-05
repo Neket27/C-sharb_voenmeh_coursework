@@ -1,5 +1,5 @@
 {
-  "Icons": {
+  "MyIcons": {
     ".exe": "system-windows.ico",
     ".dll": "qvidcap.ico",
     ".txt": "text-editor.ico",
@@ -12,7 +12,5 @@
     ".docx": "org.libreoffice.LibreOffice-writer.ico",
     ".xlsx": "org.libreoffice.LibreOffice-calc.ico",
     ".pptx": "org.libreoffice.LibreOffice-impress.ico"
-
-
   }
 }

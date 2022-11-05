@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         Title="Проводник" 
-        Height="450" 
-        Width="800"
+        Height="530" 
+        Width="830"
         
         x:Name="Window"
     xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf" xmlns:convertores="clr-namespace:C_sharb_voenmeh_coursework.Convertores" 
@@ -22,12 +22,7 @@
         
         
     <Window.Resources>
-
-
         <convertores:FileEntityToImageConverter x:Key="ToImageConverter"></convertores:FileEntityToImageConverter>
-
-
-
     </Window.Resources>
 
 
@@ -37,6 +32,7 @@
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -55,13 +51,16 @@
             <Button Width="50" Height="30" FontSize="15px" Content="O"></Button>
         </StackPanel>
 
-        <ListBox Background="#090d24" 
-                 BorderBrush="#050714"
-                 BorderThickness="0,0,5,0"
-                 Grid.Row="1" Grid.Column="0" 
-                 Grid.RowSpan="2" 
-                 ItemsSource="{Binding DirectoriesAndFilesLeftPanel}"
-                 SelectedItem="{Binding SelectedFileEntity}">
+        <Grid Grid.Row="1" 
+              Grid.Column="0" 
+              Grid.RowSpan="2" >
+            
+            <ListBox Background="#090d24" 
+                     BorderBrush="#050714"
+                     BorderThickness="0,0,5,5"
+                     ItemsSource="{Binding DirectoriesAndFilesLeftPanel}"
+                     SelectedItem="{Binding SelectedFileEntity}">
+            
 
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
@@ -125,20 +124,30 @@
 
 
 
-        </ListBox>
+        </ListBox>   
+            
+        </Grid>
+        
+        <Grid Grid.Row="3" 
+              Grid.Column="0"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+            <Image Source="{Binding PathIcon}" />
+        </Grid>
+       
 
         <TextBox Grid.Row="0" 
                  Grid.Column="1" 
                  Background="#090d24" 
                  Foreground="#e6e8f2"
                  Text="{Binding FilePath}" 
-                 x:Name="PathFile" Grid.ColumnSpan="5" 
-                  >
+                 x:Name="PathFile" Grid.ColumnSpan="5">
 
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="MouseDoubleClick">
                     <b:InvokeCommandAction Command="{Binding DataContext.OpenCommand,ElementName=Window}"
-                                CommandParameter="{Binding Text,ElementName=PathFile}"></b:InvokeCommandAction>
+                                           CommandParameter="{Binding Text,ElementName=PathFile}">
+                    </b:InvokeCommandAction>
                 </b:EventTrigger>
             </b:Interaction.Triggers>
 
@@ -155,9 +164,10 @@
         </ListView>-->
 
 
-        <ListBox Grid.Column="1" 
+        <ListBox x:Name="ListBoxDirectoriesAndFiles"
+                Grid.Column="1" 
                  Grid.Row="1"
-                 Grid.RowSpan="2"
+                 Grid.RowSpan="3"
                  ItemsSource="{Binding DirectoriesAndFiles}"
                  SelectedItem="{Binding SelectedFileEntity}" Grid.ColumnSpan="5">
             <ListBox.ItemContainerStyle>
@@ -228,12 +238,18 @@
 
                     </WrapPanel>
                 </ItemsPanelTemplate>
+                
             </ListBox.ItemsPanel>
 
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="MouseDoubleClick">
                     <b:InvokeCommandAction Command="{Binding OpenCommand}"
                                 CommandParameter="{Binding SelectedFileEntity}"></b:InvokeCommandAction>
+                </b:EventTrigger>
+          
+                <b:EventTrigger EventName="MouseLeftButtonUp">
+                    <b:InvokeCommandAction Command="{Binding ClickCommand}"
+                                           CommandParameter="{Binding SelectedFileEntity}"></b:InvokeCommandAction>
                 </b:EventTrigger>
             </b:Interaction.Triggers>
 
@@ -255,9 +271,16 @@
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Копировать" Command="{Binding CopyCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
+                    <MenuItem Header="Вставить" Command="{Binding PasteCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
+                    <MenuItem Header="Вырезать" Command="{Binding CutCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
+                    <MenuItem Header="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
 
         </ListBox>
-
-
     </Grid>
 </Window>
