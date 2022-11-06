@@ -2,10 +2,16 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Shapes;
 using app.History;
 using app.models;
 using app.models.Entity;
+using GongSolutions.Wpf.DragDrop;
+using static System.Net.WebRequestMethods;
+using File = System.IO.File;
 
 namespace app
 {
@@ -26,7 +32,9 @@ namespace app
         private FileInfo SaveCopyFile;
         private bool flag = false;
         private object ParamCut;
+        private FilePC SaveCutFile;
         public string PathIcon { get; set; }
+        public string TextInPreview { get; set; }
 
         #endregion
 
@@ -100,6 +108,7 @@ namespace app
             DirectoriesAndFilesLeftPanel.Add(DirVideo);
             DirectoriesAndFilesLeftPanel.Add(DirPictures);
             DirectoriesAndFilesLeftPanel.Add(DirMusic);
+          //  Items = new ObservableCollection<string>();
         }
 
         private void History_HistoryChanged(object? sender, EventArgs e)
@@ -128,7 +137,7 @@ namespace app
             OpenDirectory();
         }
 
-        private void OpenDirectory()
+        protected void OpenDirectory()
         {
             DirectoriesAndFiles.Clear();
             //FilePath = SelectedFileEntity.FullName;
@@ -173,6 +182,7 @@ namespace app
                         UseShellExecute = true
                     }
                 }.Start();
+                Click(null);
             }
         }
 
@@ -181,11 +191,23 @@ namespace app
             if (parameter is FilePC filePc)
             {
                 PathIcon = filePc.FullName;
+
+                FileInfo fileInfo = new FileInfo(filePc.FullName);
+                if (fileInfo.Extension == ".txt")
+                {
+                    using (FileStream fstream = File.OpenRead(filePc.FullName))
+                    {
+                        byte[] buffer = new byte[fstream.Length];
+                        fstream.Read(buffer, 0, buffer.Length);
+                        TextInPreview = Encoding.Default.GetString(buffer);
+                    }
+                }
+                else
+                    TextInPreview = "";
+
             }
             else
-            {
                 PathIcon = "";
-            }
         }
 
         private void Copy(object parameter)
@@ -210,7 +232,21 @@ namespace app
             if (parameter is DirectoryPC directoryPc)
             {
                 FilePath = directoryPc.FullName; 
-                SaveCopyFile.CopyTo(FilePath + "\\" + SaveCopyFile.Name);
+            
+                if (flag)
+                {
+                    string path1 = SaveCutFile.FullName;
+                    string name1 = SaveCutFile.DirectoryName;
+                    string path2 = directoryPc.FullName + "\\"+SaveCutFile.DirectoryName;
+                    string name2 = directoryPc.DirectoryName;
+                    File.Copy (path1, path2, true);
+                    File.Delete(path1);
+                    flag = false;
+                }
+                else
+                {
+                    SaveCopyFile.CopyTo(FilePath + "\\" + SaveCopyFile.Name);
+                }
                 OpenDirectory();
             }
         }
@@ -235,10 +271,50 @@ namespace app
 
         private void Cut(object parameter)
         {
-            Copy(parameter);
-            Delete(parameter);
+            if (parameter is FilePC filePc)
+            {
+                flag = true;
+                SaveCutFile = filePc;
+            }
+
+             //   Copy(parameter);
+            //Delete(parameter);
            
         }
         #endregion
+        
+        // public ObservableCollection<string> Items { get; set; }
+        //
+        //
+        //
+        // public void DragOver(IDropInfo dropInfo)
+        // {
+        //     dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+        //
+        //     var dataObject = dropInfo.Data as IDataObject;
+        //
+        //     dropInfo.Effects = dataObject != null && dataObject.GetDataPresent(DataFormats.FileDrop) 
+        //         ? DragDropEffects.Copy 
+        //         : DragDropEffects.Move;
+        // }
+        //
+        // public void Drop(IDropInfo dropInfo)
+        // {
+        //     var dataObject = dropInfo.Data as DataObject;
+        //     if (dataObject != null && dataObject.ContainsFileDropList())
+        //     {
+        //         var files = dataObject.GetFileDropList();
+        //         foreach (var file in files)
+        //         {
+        //             Items.Add(file);
+        //
+        //         }
+        //     }
+        // }
+        //
     }
+    
+  
+
+      
 }

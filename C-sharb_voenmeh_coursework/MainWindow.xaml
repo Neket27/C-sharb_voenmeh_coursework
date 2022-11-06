@@ -11,7 +11,9 @@
         Width="830"
         
         x:Name="Window"
-    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf" xmlns:convertores="clr-namespace:C_sharb_voenmeh_coursework.Convertores" 
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf" xmlns:convertores="clr-namespace:C_sharb_voenmeh_coursework.Convertores"
+        xmlns:dd="urn:gong-wpf-dragdrop"
+        xmlns:ui="clr-namespace:C_sharb_voenmeh_coursework"
         Visibility="Visible" 
         WindowStyle="SingleBorderWindow" 
         Background="#FF110202" 
@@ -23,6 +25,27 @@
         
     <Window.Resources>
         <convertores:FileEntityToImageConverter x:Key="ToImageConverter"></convertores:FileEntityToImageConverter>
+
+        <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
+            <Border Background="{TemplateBinding Background}" 
+                x:Name="Bd" BorderBrush="#141111"
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0">
+                <ScrollViewer x:Name="PART_ContentHost"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="Width" Value="Auto">
+                    <Setter Property="MinWidth" Value="0"/>
+                </Trigger>
+                <Trigger Property="Height" Value="Auto">
+                    <Setter Property="MinHeight" Value="0"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
     </Window.Resources>
 
 
@@ -57,9 +80,12 @@
             
             <ListBox Background="#090d24" 
                      BorderBrush="#050714"
-                     BorderThickness="0,0,5,5"
+                     BorderThickness="0,0,5,0"
                      ItemsSource="{Binding DirectoriesAndFilesLeftPanel}"
-                     SelectedItem="{Binding SelectedFileEntity}">
+                     SelectedItem="{Binding SelectedFileEntity}"
+                     dd:DragDrop.IsDropTarget="True"
+                     dd:DragDrop.IsDragSource="True"
+                     dd:DragDrop.DropHandler="{x:Static ui:DragDrop.Instance}">
             
 
             <ListBox.ItemContainerStyle>
@@ -122,8 +148,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
-
-
         </ListBox>   
             
         </Grid>
@@ -133,12 +157,13 @@
               HorizontalAlignment="Center"
               VerticalAlignment="Center">
             <Image Source="{Binding PathIcon}" />
+            <MediaElement Source="{Binding PathIcon}" />
+            <TextBox BorderBrush="#090d24" BorderThickness="2" Foreground="#e6e8f2"  Template="{StaticResource TextBoxBaseControlTemplate}" Text="{Binding TextInPreview}"></TextBox>
         </Grid>
        
-
         <TextBox Grid.Row="0" 
                  Grid.Column="1" 
-                 Background="#090d24" 
+                 Background="#030202" 
                  Foreground="#e6e8f2"
                  Text="{Binding FilePath}" 
                  x:Name="PathFile" Grid.ColumnSpan="5">
@@ -152,7 +177,6 @@
             </b:Interaction.Triggers>
 
         </TextBox>
-
 
 
         <!--<ListView Grid.Column="1" Grid.Row="1" x:Name="ListDisksAndDirsAndFiles">
@@ -169,7 +193,12 @@
                  Grid.Row="1"
                  Grid.RowSpan="3"
                  ItemsSource="{Binding DirectoriesAndFiles}"
-                 SelectedItem="{Binding SelectedFileEntity}" Grid.ColumnSpan="5">
+                 SelectedItem="{Binding SelectedFileEntity}" Grid.ColumnSpan="5"
+                dd:DragDrop.IsDropTarget="True"
+                dd:DragDrop.IsDragSource="True"
+                dd:DragDrop.DropHandler="{x:Static ui:DragDrop.Instance}"
+                 >
+            
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Background" Value="Transparent"/>
@@ -282,5 +311,6 @@
             </ListBox.ContextMenu>
 
         </ListBox>
+
     </Grid>
 </Window>

@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Media;
 using app;
+using GongSolutions.Wpf.DragDrop;
 
 
 namespace C_sharb_voenmeh_coursework
@@ -9,10 +11,16 @@ namespace C_sharb_voenmeh_coursework
     {
         public MainWindow()
         {
-            DataContext = new MainApp();
+          
+            DataContext = new DragDrop();
+           // DataContext = new MainApp();
             
             InitializeComponent();
            
         }
     }
+
+   
+
+        
 }
