@@ -11,16 +11,11 @@ namespace C_sharb_voenmeh_coursework
     {
         public MainWindow()
         {
-          
-            DataContext = new DragDrop();
-           // DataContext = new MainApp();
-            
+            DataContext = new MainApp();
             InitializeComponent();
-           
+            
         }
+        
     }
-
-   
-
         
 }

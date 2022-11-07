@@ -34,10 +34,11 @@ namespace app
 
         public bool CanMoveBack => Current.PreviousNode != null;
         public bool CanMoveForward => Current.NextNode != null;
-        
+
+      
         public void Add(string filePath, string name)
         {
-            var node = new DirectoryNode(filePath, name);
+            DirectoryNode node = new DirectoryNode(filePath, name);
             Current.NextNode = node;
             node.PreviousNode = Current;
             Current = node;
@@ -49,9 +50,7 @@ namespace app
         public void MoveBack()
         {
             var prev = Current.PreviousNode;
-
             Current = prev!;
-
             RaiseHistoryChanged();
         }
 
@@ -68,18 +67,16 @@ namespace app
         {
             yield return Current;
         }
-        
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        private void RaiseHistoryChanged() => HistoryChanged?.Invoke(this, EventArgs.Empty);
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+          return  GetEnumerator();
+        }
+        private void RaiseHistoryChanged()
+        {
+            HistoryChanged?.Invoke(this, EventArgs.Empty);
+        }
 
         #endregion
-
-        
-
-
-        
-       
-       
-
     }
 }
