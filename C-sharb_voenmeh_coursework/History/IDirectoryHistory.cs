@@ -9,7 +9,7 @@ namespace app.History
 
         bool CanMoveBack { get;}
         bool CanMoveForward { get;}
-        DirectoryNode Current { get; }
+        DirectoryNode Current { get; set; }
 
         #endregion
 

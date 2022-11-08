@@ -8,6 +8,8 @@ using app.History;
 using app.models;
 using app.models.Entity;
 using C_sharb_voenmeh_coursework;
+using C_sharb_voenmeh_coursework.Command;
+using C_sharb_voenmeh_coursework.History;
 
 namespace app
 {
@@ -24,10 +26,9 @@ namespace app
         public string FilePath { get; set; } = "Этот компьютер";
         public EntityDirectoryAndFile SelectedFileEntity { get; set; }
         public string Name { get; set; } = "Этот компьютер";
-        private readonly IDirectoryHistory _history;
+        private IDirectoryHistory _history;
         private FileInfo SaveCopyFile;
-        private bool flag = false;
-        private object ParamCut;
+        private bool FlagCut = false;
         private FilePC SaveCutFile;
         public string PathIcon { get; set; }
         public string TextInPreview { get; set; }
@@ -104,7 +105,6 @@ namespace app
             DirectoriesAndFilesLeftPanel.Add(DirVideo);
             DirectoriesAndFilesLeftPanel.Add(DirPictures);
             DirectoriesAndFilesLeftPanel.Add(DirMusic);
-          //  Items = new ObservableCollection<string>();
         }
 
         private void History_HistoryChanged(object? sender, EventArgs e)
@@ -137,7 +137,6 @@ namespace app
         public void OpenDirectory()
         {
             DirectoriesAndFiles.Clear();
-            //FilePath = SelectedFileEntity.FullName;
 
             if (Name == "Этот компьютер")
             {
@@ -179,6 +178,7 @@ namespace app
                         UseShellExecute = true
                     }
                 }.Start();
+
                 Click(null);
             }
         }
@@ -189,11 +189,7 @@ namespace app
             Name="Этот компьютер";
             FilePath = "Этот компьютер";
             _history.Clear();
-            
             OpenDirectory();
-
-
-
         }
 
         
@@ -245,7 +241,7 @@ namespace app
             {
                 FilePath = directoryPc.FullName; 
             
-                if (flag)
+                if (FlagCut)
                 {
                     string path1 = SaveCutFile.FullName;
                     string name1 = SaveCutFile.DirectoryName;
@@ -253,7 +249,7 @@ namespace app
                     string name2 = directoryPc.DirectoryName;
                     File.Copy (path1, path2, true);
                     File.Delete(path1);
-                    flag = false;
+                    FlagCut = false;
                 }
                 else
                 {
@@ -285,7 +281,7 @@ namespace app
         {
             if (parameter is FilePC filePc)
             {
-                flag = true;
+                FlagCut = true;
                 SaveCutFile = filePc;
             }
         }

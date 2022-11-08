@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace app
+namespace C_sharb_voenmeh_coursework.Command
 {
     public class DelegateCommand : ICommand
     {
@@ -43,6 +43,6 @@ namespace app
         }
 
         #endregion
-      
+
     }
 }
