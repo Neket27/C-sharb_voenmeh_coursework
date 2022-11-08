@@ -8,7 +8,7 @@ namespace C_sharb_voenmeh_coursework.Actions
     internal static class Ico
     {
         private static Icons? Icons=Icons.Open("icons.json");
-        public static FileInfo GetImagePath(string extension)
+        public static FileInfo? GetImagePath(string extension)
         {
             var applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -18,7 +18,8 @@ namespace C_sharb_voenmeh_coursework.Actions
                 return new FileInfo(Path.Combine(applicationDirectory, "Resource/Icons", path));
             }
 
-            return new FileInfo(Path.Combine(applicationDirectory, "Resource/Icons", "folder2.jpg"));
+           // return new FileInfo(Path.Combine(applicationDirectory, "Resource/Icons", "folder2.jpg"));
+           return null;
         }
     }
 

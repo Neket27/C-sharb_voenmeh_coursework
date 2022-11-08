@@ -3,15 +3,11 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Shapes;
 using app.History;
 using app.models;
 using app.models.Entity;
-using GongSolutions.Wpf.DragDrop;
-using static System.Net.WebRequestMethods;
-using File = System.IO.File;
+using C_sharb_voenmeh_coursework;
 
 namespace app
 {
@@ -35,7 +31,6 @@ namespace app
         private FilePC SaveCutFile;
         public string PathIcon { get; set; }
         public string TextInPreview { get; set; }
-
         #endregion
 
         #region Commands
@@ -67,6 +62,7 @@ namespace app
 
             _history = new DirectoryHistory("Этот компьютер", "Этот компьютер");
             OpenCommand = new DelegateCommand(Open);
+            CloseCommand = new DelegateCommand(Close);
             ClickCommand = new Explorer.Shared.ViewModels.DelegateCommand(Click);
             MoveBackCommand = new DelegateCommand(OnMoveBack, OnCanMoveBack);
             MoveForwardCommand = new DelegateCommand(OnMoveForward, OnCanMoveForward);
@@ -119,6 +115,7 @@ namespace app
 
         private bool OnCanMoveForward(object obj) => _history.CanMoveForward;
         private bool OnCanMoveBack(object obj) => _history.CanMoveBack;
+
         private void OnMoveForward(object obj)
         {
             _history.MoveForward();
@@ -137,7 +134,7 @@ namespace app
             OpenDirectory();
         }
 
-        protected void OpenDirectory()
+        public void OpenDirectory()
         {
             DirectoriesAndFiles.Clear();
             //FilePath = SelectedFileEntity.FullName;
@@ -185,6 +182,21 @@ namespace app
                 Click(null);
             }
         }
+
+
+        private void Close(object parametr)
+        {
+            Name="Этот компьютер";
+            FilePath = "Этот компьютер";
+            _history.Clear();
+            
+            OpenDirectory();
+
+
+
+        }
+
+        
 
         private void Click(object parameter)
         {
@@ -276,45 +288,9 @@ namespace app
                 flag = true;
                 SaveCutFile = filePc;
             }
-
-             //   Copy(parameter);
-            //Delete(parameter);
-           
         }
         #endregion
         
-        // public ObservableCollection<string> Items { get; set; }
-        //
-        //
-        //
-        // public void DragOver(IDropInfo dropInfo)
-        // {
-        //     dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
-        //
-        //     var dataObject = dropInfo.Data as IDataObject;
-        //
-        //     dropInfo.Effects = dataObject != null && dataObject.GetDataPresent(DataFormats.FileDrop) 
-        //         ? DragDropEffects.Copy 
-        //         : DragDropEffects.Move;
-        // }
-        //
-        // public void Drop(IDropInfo dropInfo)
-        // {
-        //     var dataObject = dropInfo.Data as DataObject;
-        //     if (dataObject != null && dataObject.ContainsFileDropList())
-        //     {
-        //         var files = dataObject.GetFileDropList();
-        //         foreach (var file in files)
-        //         {
-        //             Items.Add(file);
-        //
-        //         }
-        //     }
-        // }
-        //
+       
     }
-    
-  
-
-      
 }

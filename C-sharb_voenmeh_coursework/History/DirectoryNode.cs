@@ -12,6 +12,9 @@ internal class DirectoryNode
     #endregion
 
     #region Constructors
+
+    public DirectoryNode() { }
+
     public DirectoryNode(string directoryPath, string directoryPathName)
     {
         DirectoryPath = directoryPath;

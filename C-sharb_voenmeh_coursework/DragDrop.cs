@@ -8,9 +8,10 @@ using GongSolutions.Wpf.DragDrop;
 
 namespace C_sharb_voenmeh_coursework;
 
-public class DragDrop : MainApp, IDropTarget
+public class DragDrop : IDropTarget
 {
     public static DragDrop Instance = new DragDrop();
+    private MainApp MainApp = new MainApp();
 
     public void DragOver(IDropInfo dropInfo)
     {
@@ -34,7 +35,7 @@ public class DragDrop : MainApp, IDropTarget
             File.Copy(filePc.FullName, entityDirectoryAndFile.FullName + "\\" + filePc.DirectoryName, true);
             ((IList) dropInfo.DragInfo.SourceCollection).Remove(filePc);
             File.Delete(filePc.FullName);
-            OpenDirectory();
+            MainApp.OpenDirectory();
         }
         else
         {
@@ -46,7 +47,7 @@ public class DragDrop : MainApp, IDropTarget
                 {
                     string path2 = entityDirectoryAndFile.FullName + "\\" + new FileInfo(path).Name;
                     File.Copy(path, path2, true);
-                    OpenDirectory();
+                    MainApp.OpenDirectory();
                     ((IList) dropInfo.DragInfo.SourceCollection).Remove(path);
                 }
             }

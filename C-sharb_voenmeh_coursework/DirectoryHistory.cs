@@ -5,12 +5,13 @@ using System.Collections.Generic;
 
 namespace app
 {
-    internal class DirectoryHistory : IDirectoryHistory
+    internal class DirectoryHistory : IEnumerable, IDirectoryHistory
     {
         #region Variebles
 
         private DirectoryNode _head;
         public DirectoryNode Current { get; set; }
+        public List<DirectoryNode> DirectoryNodes = new List<DirectoryNode>();
 
         #endregion
 
@@ -34,10 +35,11 @@ namespace app
 
         public bool CanMoveBack => Current.PreviousNode != null;
         public bool CanMoveForward => Current.NextNode != null;
-        
+
+      
         public void Add(string filePath, string name)
         {
-            var node = new DirectoryNode(filePath, name);
+            DirectoryNode node = new DirectoryNode(filePath, name);
             Current.NextNode = node;
             node.PreviousNode = Current;
             Current = node;
@@ -45,13 +47,21 @@ namespace app
             RaiseHistoryChanged();
         }
 
+        public void Clear()
+        {
+            DirectoryNode directoryNode= new DirectoryNode();
+            Current.PreviousNode = directoryNode;
+            Current.NextNode = directoryNode;
+            Current = directoryNode;
+            RaiseHistoryChanged();
+
+        }
+
 
         public void MoveBack()
         {
             var prev = Current.PreviousNode;
-
             Current = prev!;
-
             RaiseHistoryChanged();
         }
 
@@ -64,22 +74,20 @@ namespace app
             RaiseHistoryChanged();
         }
 
-        public IEnumerator<DirectoryNode> GetEnumerator()
+        //public IEnumerator<DirectoryNode> GetEnumerator()
+        //{
+        //    yield return Current;
+        //}
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
             yield return Current;
         }
-        
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        private void RaiseHistoryChanged() => HistoryChanged?.Invoke(this, EventArgs.Empty);
+        private void RaiseHistoryChanged()
+        {
+            HistoryChanged?.Invoke(this, EventArgs.Empty);
+        }
 
         #endregion
-
-        
-
-
-        
-       
-       
-
     }
 }

@@ -71,7 +71,7 @@
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
             <Button Width="50" Height="30" FontSize="15px" Content="&lt;-" Command="{Binding MoveBackCommand}"></Button>
             <Button Width="50" Height="30" FontSize="15px" Content="-&gt;" Command="{Binding MoveForwardCommand}"></Button>
-            <Button Width="50" Height="30" FontSize="15px" Content="O"></Button>
+            <Button Width="50" Height="30" FontSize="15px" Content="O" Command="{Binding CloseCommand}"></Button>
         </StackPanel>
 
         <Grid Grid.Row="1" 
