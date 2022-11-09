@@ -1,24 +1,20 @@
-﻿using app.History;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using app.History;
 
 namespace C_sharb_voenmeh_coursework.History
 {
-    internal class DirectoryHistory :  IDirectoryHistory
+    internal class DirectoryHistory : IDirectoryHistory
     {
         #region Variebles
+
         public DirectoryNode Current { get; set; } //Поле Current находится в этом классе и сюда наследуется интерфейс IEnumerable для перечисления Сurrent. В IEnumerable поле Сurrent хранится как бы в массиве Сurrent1, Сurrent2.., а у каждого Сurrent есть поле с сылкой на предыдущий и следующий Сurrent. Так у Сurrent3 будет PreviousNode=Сurrent2, а NextNode=Сurrent4
 
         #endregion
 
         #region Constructors
 
-        public DirectoryHistory() { }
-
         public DirectoryHistory(string directoryPath, string directoryPathName)
         {
-
             Current = new DirectoryNode(directoryPath, directoryPathName);
         }
 
@@ -38,7 +34,7 @@ namespace C_sharb_voenmeh_coursework.History
 
         public void Add(string filePath, string name)
         {
-            DirectoryNode node = new DirectoryNode(filePath, name);  //новый нод
+            DirectoryNode node = new DirectoryNode(filePath, name); //новый нод
             Current.NextNode = node; // текущему ноду ставим в NextNode новый нод
             node.PreviousNode = Current; // А у нового нода PreviousNode записываем текущий нод
             Current = node; // Меняем текущий нод на новый
@@ -53,7 +49,6 @@ namespace C_sharb_voenmeh_coursework.History
             Current.NextNode = directoryNode;
             Current = directoryNode;
             RaiseHistoryChanged();
-
         }
 
 

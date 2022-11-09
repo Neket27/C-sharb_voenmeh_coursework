@@ -7,10 +7,7 @@ namespace C_sharb_voenmeh_coursework.Command;
 
 public class Command: FunctionCommand
 {
-    #region Commands
-    
-    
-
+  #region Commands
     public ICommand OpenCommand { get; set; }
     public ICommand ClickCommand { get; set; }
     public ICommand CloseCommand { get; set; }
@@ -26,7 +23,6 @@ public class Command: FunctionCommand
 
 
     #region Constructors
-
     public Command()
     {
         History = new DirectoryHistory("Этот компьютер", "Этот компьютер");

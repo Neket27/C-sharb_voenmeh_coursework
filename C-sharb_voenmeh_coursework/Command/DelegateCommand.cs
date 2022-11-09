@@ -7,12 +7,15 @@ namespace C_sharb_voenmeh_coursework.Command
     {
         #region Variebles
 
-        private readonly Action<object> _execute; //readonly - присвоить значение можно только в конструкторе этого класса
+        private readonly Action<object>
+            _execute; //readonly - присвоить значение можно только в конструкторе этого класса
+
         private readonly Predicate<object> _canExecute;
 
         #endregion
 
         #region Constructors
+
         public DelegateCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
             _execute = execute;
@@ -43,6 +46,5 @@ namespace C_sharb_voenmeh_coursework.Command
         }
 
         #endregion
-
     }
 }

@@ -1,25 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-using System.Windows.Input;
-using app.History;
-using app.models;
-using app.models.Entity;
-using C_sharb_voenmeh_coursework;
-using C_sharb_voenmeh_coursework.Command;
-using C_sharb_voenmeh_coursework.History;
+﻿using C_sharb_voenmeh_coursework.Command;
 
 namespace app
 {
-    public class MainApp: Command // Наследование BaseViewModel нужно так как там  INotifyPropertyChanged
+    public class MainApp : Command // Наследование BaseViewModel нужно так как там  INotifyPropertyChanged
     {
         #region Variebles
-        
+
         #endregion
 
-      
 
         #region Constructors
 
@@ -30,6 +18,5 @@ namespace app
         }
 
         #endregion
-        
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -9,26 +8,17 @@ using app.models.Entity;
 
 namespace C_sharb_voenmeh_coursework.Command;
 
-public class FunctionCommand :BaseViewModel
+public class FunctionCommand : ModelOutput
 {
-    public ObservableCollection<EntityDirectoryAndFile> DirectoriesAndFilesLeftPanel { get; set; } =
-        new ObservableCollection<EntityDirectoryAndFile>();
+    #region Variebles
 
-    public ObservableCollection<EntityDirectoryAndFile> DirectoriesAndFiles { get; set; } =
-        new ObservableCollection<EntityDirectoryAndFile>();
-    
-    public EntityDirectoryAndFile SelectedFileEntity { get; set; }
-    public IDirectoryHistory History { get; set; }
-    
     private FileInfo SaveCopyFile;
     private bool FlagCut = false;
     private FilePC SaveCutFile;
-    public string PathIcon { get; set; }
-    public string TextInPreview { get; set; }
+    public IDirectoryHistory History { get; set; }
     
-    public string FilePath { get; set; } = "Этот компьютер";
-    public string Name { get; set; } = "Этот компьютер";
-    
+    #endregion
+ 
     
     #region Functions
     
