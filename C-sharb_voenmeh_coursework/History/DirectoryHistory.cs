@@ -8,7 +8,6 @@ namespace C_sharb_voenmeh_coursework.History
     internal class DirectoryHistory :  IDirectoryHistory
     {
         #region Variebles
-
         public DirectoryNode Current { get; set; } //Поле Current находится в этом классе и сюда наследуется интерфейс IEnumerable для перечисления Сurrent. В IEnumerable поле Сurrent хранится как бы в массиве Сurrent1, Сurrent2.., а у каждого Сurrent есть поле с сылкой на предыдущий и следующий Сurrent. Так у Сurrent3 будет PreviousNode=Сurrent2, а NextNode=Сurrent4
 
         #endregion

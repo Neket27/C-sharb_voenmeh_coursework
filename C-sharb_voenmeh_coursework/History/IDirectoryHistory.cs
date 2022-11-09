@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace app.History
 {
-    internal interface IDirectoryHistory 
+    public interface IDirectoryHistory 
     {
         #region Variebles
 

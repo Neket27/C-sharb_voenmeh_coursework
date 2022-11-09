@@ -1,0 +1,174 @@
+@startuml
+
+interface IDropTarget
+ {
+ }
+
+class DragDrop
+{
++ static DragDrop Instance
+- MainApp MainApp
+
++ void DragOver(IDropInfo dropInfo)
++ void Drop(IDropInfo dropInfo)
+
+}
+
+IDropTarget --|> DragDrop
+
+static class Ico
+{
+- static Icons Icons
+
++ static FileInfo GetImagePath(string extension)
+}
+
+class Icons
+{
++ Dictionary<string, string> MyIcons
+
++ static Icons Open(string path)
+}
+
+ interface  ICommand
+{
+}
+
+class DelegateCommand
+{
+- readonly Action<object> _execute
+- readonly Predicate<object>
++ event EventHandler? CanExecuteChanged;
+
++ bool CanExecute(object? parameter)
++ void Execute(object? parameter)
++ void RaiseCanExecuteChanged()
+}
+
+ICommand --|> DelegateCommand
+
+interface  IValueConverter
+{
+}
+
+class FileEntityToImageConverter
+ {
++ object Convert(object value, Type targetType, object parameter, CultureInfo culture)
++ public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+- BitmapSource BitmapBitmapSourse(Bitmap bitmap) 
+ }
+
+ IValueConverter --|> FileEntityToImageConverter
+ 
+interface IDirectoryHistory 
+{
++ bool CanMoveBack
++ bool CanMoveForward
++ DirectoryNode Current
+
++ void MoveBack();
++void MoveForward();
++void Add(string filePath, string name);
++void Clear();
+} 
+ 
+class DirectoryHistory
+{
++ DirectoryNode Current 
++ event EventHandler HistoryChanged
+
++ bool CanMoveBack()
++ bool CanMoveForward()
++ void Add(string filePath, string name)
++ void Clear()
++ void MoveBack()
++ void MoveForward()
+- void RaiseHistoryChanged()
+}
+
+IDirectoryHistory --|> DirectoryHistory
+
+class DirectoryNode 
+{
++ string DirectoryPath
++ string DirectoryPathName
++ DirectoryNode PreviousNode
++ DirectoryNode NextNode
+}
+
+DirectoryNode --* DirectoryHistory 
+
+interface INotifyPropertyChanged
+{
+}
+
+class BaseViewModel
+{
++ event PropertyChangedEventHandler? PropertyChanged
+# virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+
+
+}
+
+INotifyPropertyChanged ---|> BaseViewModel
+
+abstract class EntityDirectoryAndFile
+{
++ string FullName { get; set; }
++ string Name { get; set; }
+}
+
+BaseViewModel -|> EntityDirectoryAndFile
+
+class DirectoryPC
+{
+}
+class FilePC
+{
+}
+
+EntityDirectoryAndFile --|> DirectoryPC
+EntityDirectoryAndFile --|> FilePC
+
+class MainApp 
+{
++ ObservableCollection<EntityDirectoryAndFile> DirectoriesAndFilesLeftPanel
++ ObservableCollection<EntityDirectoryAndFile> DirectoriesAndFiles
++ string FilePath 
++ EntityDirectoryAndFile SelectedFileEntity
++ string Name
+- IDirectoryHistory _history
+- FileInfo SaveCopyFile
+- bool FlagCut
+- FilePC SaveCutFile
++ string PathIcon
++ string TextInPreview
++ Command OpenCommand
++ ICommand ClickCommand
++ ICommand CloseCommand
++ ICommand CopyCommand
++ ICommand PasteCommand
++ ICommand CutCommand
++ ICommand DeleteCommand
++ DelegateCommand MoveBackCommand
++ DelegateCommand MoveForwardCommand
+
+- void CallLeftPanel()
+- void History_HistoryChanged(object? sender, EventArgs e)
+- bool OnCanMoveForward(object obj)
+- bool OnCanMoveBack(object obj)
+- void OnMoveForward(object obj)
+- void OnMoveBack(object obj)
++ void OpenDirectory()
+- void Open(object parameter)
+- void Close(object parameter)
+- void Click(object parameter)
+- void Copy(object parameter)
+- void Paste(object parameter)
+- void Delete(object parameter)
+- void Cut(object parameter)
+}
+
+MainApp --* DragDrop
+
+@enduml

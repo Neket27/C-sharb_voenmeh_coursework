@@ -1,6 +1,6 @@
 namespace app.History;
 
-internal class DirectoryNode
+public class DirectoryNode
 {
     #region Variebles
 
@@ -14,7 +14,7 @@ internal class DirectoryNode
     #region Constructors
 
     public DirectoryNode() { }
-
+    
     public DirectoryNode(string directoryPath, string directoryPathName)
     {
         DirectoryPath = directoryPath;

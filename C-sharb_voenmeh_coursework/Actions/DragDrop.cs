@@ -4,6 +4,7 @@ using System.Windows;
 using app;
 using app.models;
 using app.models.Entity;
+using C_sharb_voenmeh_coursework.Command;
 using GongSolutions.Wpf.DragDrop;
 
 namespace C_sharb_voenmeh_coursework;
@@ -11,7 +12,7 @@ namespace C_sharb_voenmeh_coursework;
 public class DragDrop : IDropTarget
 {
     public static DragDrop Instance = new DragDrop();
-    private MainApp MainApp = new MainApp();
+    private FunctionCommand FunctionCommand = new FunctionCommand();
 
     public void DragOver(IDropInfo dropInfo)
     {
@@ -32,10 +33,10 @@ public class DragDrop : IDropTarget
         if (dropInfo.Data is FilePC)
         {
             FilePC filePc = (FilePC) dropInfo.Data;
-            File.Copy(filePc.FullName, entityDirectoryAndFile.FullName + "\\" + filePc.DirectoryName, true);
+            File.Copy(filePc.FullName, entityDirectoryAndFile.FullName + "\\" + filePc.Name, true);
             ((IList) dropInfo.DragInfo.SourceCollection).Remove(filePc);
             File.Delete(filePc.FullName);
-            MainApp.OpenDirectory();
+            FunctionCommand.OpenDirectory();
         }
         else
         {
@@ -47,7 +48,7 @@ public class DragDrop : IDropTarget
                 {
                     string path2 = entityDirectoryAndFile.FullName + "\\" + new FileInfo(path).Name;
                     File.Copy(path, path2, true);
-                    MainApp.OpenDirectory();
+                    FunctionCommand.OpenDirectory();
                     ((IList) dropInfo.DragInfo.SourceCollection).Remove(path);
                 }
             }

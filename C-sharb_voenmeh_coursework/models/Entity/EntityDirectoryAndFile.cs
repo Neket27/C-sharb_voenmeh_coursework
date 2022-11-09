@@ -6,15 +6,14 @@
 
         public string FullName { get; set; }
         public string Name { get; set; }
-        public string DirectoryName { get; }
 
         #endregion
 
         #region Constructors
 
-        protected EntityDirectoryAndFile(string directoryName)
+        protected EntityDirectoryAndFile(string name)
         {
-            DirectoryName = directoryName;
+            Name = name;
         }
 
         #endregion

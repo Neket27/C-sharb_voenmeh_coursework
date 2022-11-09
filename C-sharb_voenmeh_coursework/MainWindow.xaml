@@ -296,7 +296,7 @@
                             <!--<Image Grid.Column="0" Source="Resource/Ico/folder.ico" Width="20" Height="20"></Image>-->
                         </Grid>
 
-                        <TextBlock Foreground="#e6e8f2" FontSize="14" Height="20" Grid.Column="1" Text="{Binding DirectoryName}" />
+                        <TextBlock Foreground="#e6e8f2" FontSize="14" Height="20" Grid.Column="1" Text="{Binding Name}" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
