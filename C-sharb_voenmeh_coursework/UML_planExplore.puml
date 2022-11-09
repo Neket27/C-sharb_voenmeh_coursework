@@ -7,7 +7,7 @@ interface IDropTarget
 class DragDrop
 {
 + static DragDrop Instance
-- MainApp MainApp
+- FunctionCommand FunctionCommand 
 
 + void DragOver(IDropInfo dropInfo)
 + void Drop(IDropInfo dropInfo)
@@ -114,8 +114,8 @@ INotifyPropertyChanged ---|> BaseViewModel
 
 abstract class EntityDirectoryAndFile
 {
-+ string FullName { get; set; }
-+ string Name { get; set; }
+- string FullName
+- string Name 
 }
 
 BaseViewModel -|> EntityDirectoryAndFile
@@ -130,36 +130,35 @@ class FilePC
 EntityDirectoryAndFile --|> DirectoryPC
 EntityDirectoryAndFile --|> FilePC
 
-class MainApp 
-{
-+ ObservableCollection<EntityDirectoryAndFile> DirectoriesAndFilesLeftPanel
-+ ObservableCollection<EntityDirectoryAndFile> DirectoriesAndFiles
-+ string FilePath 
-+ EntityDirectoryAndFile SelectedFileEntity
-+ string Name
-- IDirectoryHistory _history
-- FileInfo SaveCopyFile
-- bool FlagCut
-- FilePC SaveCutFile
-+ string PathIcon
-+ string TextInPreview
-+ Command OpenCommand
-+ ICommand ClickCommand
-+ ICommand CloseCommand
-+ ICommand CopyCommand
-+ ICommand PasteCommand
-+ ICommand CutCommand
-+ ICommand DeleteCommand
-+ DelegateCommand MoveBackCommand
-+ DelegateCommand MoveForwardCommand
 
-- void CallLeftPanel()
+class Command
+{
+- ICommand OpenCommand
+- ICommand ClickCommand
+- ICommand CloseCommand
+- ICommand CopyCommand
+- ICommand PasteCommand
+- ICommand CutCommand
+- ICommand DeleteCommand
+- DelegateCommand MoveBackCommand
+- DelegateCommand MoveForwardCommand
+
 - void History_HistoryChanged(object? sender, EventArgs e)
 - bool OnCanMoveForward(object obj)
 - bool OnCanMoveBack(object obj)
 - void OnMoveForward(object obj)
 - void OnMoveBack(object obj)
+}
+
+class FunctionCommand
+{
+- FileInfo SaveCopyFile
+- bool FlagCut
+- FilePC SaveCutFile
+- IDirectoryHistory _history
+
 + void OpenDirectory()
+- void CallLeftPanel()
 - void Open(object parameter)
 - void Close(object parameter)
 - void Click(object parameter)
@@ -169,6 +168,23 @@ class MainApp
 - void Cut(object parameter)
 }
 
-MainApp --* DragDrop
+class ModelOutput
+{
+- ObservableCollection<EntityDirectoryAndFile> DirectoriesAndFilesLeftPanel
+- ObservableCollection<EntityDirectoryAndFile> DirectoriesAndFiles
+- string FilePath 
+- EntityDirectoryAndFile SelectedFileEntity
+- string Name
+- string PathIcon
+- string TextInPreview
+}
+
+class MainApp 
+{
+
+
+}
+
+
 
 @enduml
