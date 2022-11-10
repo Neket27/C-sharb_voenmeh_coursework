@@ -15,6 +15,7 @@ class DragDrop
 }
 
 IDropTarget --|> DragDrop
+FunctionCommand --* DragDrop
 
 static class Ico
 {
@@ -29,6 +30,8 @@ class Icons
 
 + static Icons Open(string path)
 }
+
+Icons --* Ico
 
  interface  ICommand
 {
@@ -46,6 +49,7 @@ class DelegateCommand
 }
 
 ICommand --|> DelegateCommand
+DelegateCommand --* Command
 
 interface  IValueConverter
 {
@@ -58,7 +62,8 @@ class FileEntityToImageConverter
 - BitmapSource BitmapBitmapSourse(Bitmap bitmap) 
  }
 
- IValueConverter --|> FileEntityToImageConverter
+IValueConverter --|> FileEntityToImageConverter
+Ico --* FileEntityToImageConverter
  
 interface IDirectoryHistory 
 {
@@ -71,6 +76,8 @@ interface IDirectoryHistory
 +void Add(string filePath, string name);
 +void Clear();
 } 
+
+IDirectoryHistory --* FunctionCommand
  
 class DirectoryHistory
 {
@@ -110,7 +117,7 @@ class BaseViewModel
 
 }
 
-INotifyPropertyChanged ---|> BaseViewModel
+INotifyPropertyChanged --|> BaseViewModel
 
 abstract class EntityDirectoryAndFile
 {
@@ -178,13 +185,16 @@ class ModelOutput
 - string PathIcon
 - string TextInPreview
 }
-
 class MainApp 
 {
 
 
 }
 
+BaseViewModel --|> ModelOutput
+ModelOutput -|> FunctionCommand
+FunctionCommand  -|> Command
+Command -|> MainApp
 
 
 @enduml

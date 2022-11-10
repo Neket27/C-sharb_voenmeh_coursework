@@ -11,7 +11,7 @@
         Width="830"
         
         x:Name="Window"
-    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf" xmlns:convertores="clr-namespace:C_sharb_voenmeh_coursework.Convertores"
+        xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf" xmlns:convertores="clr-namespace:C_sharb_voenmeh_coursework.Convertores"
         xmlns:dd="urn:gong-wpf-dragdrop"
         xmlns:ui="clr-namespace:C_sharb_voenmeh_coursework"
         Visibility="Visible" 
