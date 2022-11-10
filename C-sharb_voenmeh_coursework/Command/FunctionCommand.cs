@@ -6,6 +6,8 @@ using System.Text;
 using app.History;
 using app.models;
 using app.models.Entity;
+using GongSolutions.Wpf.DragDrop;
+using Microsoft.VisualBasic.FileIO;
 
 namespace C_sharb_voenmeh_coursework.Command;
 
@@ -14,8 +16,10 @@ public class FunctionCommand : ModelOutput
     #region Variebles
 
     private FileInfo SaveCopyFile;
+    private DirectoryInfo SaveCopyDirectory;
     private bool FlagCut = false;
     private FilePC SaveCutFile;
+    private bool FlagCopyFile;
     public IDirectoryHistory History { get; set; }
     
     #endregion
@@ -112,12 +116,14 @@ public class FunctionCommand : ModelOutput
             if(parameter is DirectoryPC directoryPc)
             {
                 FilePath = directoryPc.FullName;
-                DirectoryInfo directoryInfo = new DirectoryInfo(FilePath);
+                SaveCopyDirectory = new DirectoryInfo(FilePath);
+                
             } 
 
             if (parameter is FilePC filePc)
             {
                 SaveCopyFile = new FileInfo(filePc.FullName);
+                FlagCopyFile = true;
             }
         }
 
@@ -142,7 +148,12 @@ public class FunctionCommand : ModelOutput
                 }
                 else
                 {
+                    if(FlagCopyFile)
                     SaveCopyFile.CopyTo(FilePath + "\\" + SaveCopyFile.Name);
+                    else
+                    FileSystem.CopyDirectory(SaveCopyDirectory.FullName,FilePath+ "\\" + SaveCopyDirectory.Name );
+                    
+                    FlagCopyFile = false;
                 }
                 OpenDirectory();
             }

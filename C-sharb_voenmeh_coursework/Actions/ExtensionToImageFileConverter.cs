@@ -8,14 +8,14 @@ namespace C_sharb_voenmeh_coursework.Actions
     internal static class Ico
     {
         private static Icons? Icons=Icons.Open("icons.json");
-        public static FileInfo? GetImagePath(string extension)
+        public static string GetImagePath(string extension)
         {
-            var applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
             if (Icons.MyIcons.ContainsKey(extension))
             {
-                var path = Icons.MyIcons[extension];
-                return new FileInfo(Path.Combine(applicationDirectory, "Resource/Icons", path));
+                string name = Icons.MyIcons[extension];
+                return new FileInfo(Path.Combine(applicationDirectory, "Resource/Icons", name)).FullName;
             }
 
            // return new FileInfo(Path.Combine(applicationDirectory, "Resource/Icons", "folder2.jpg"));

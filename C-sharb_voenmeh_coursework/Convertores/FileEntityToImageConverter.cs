@@ -84,7 +84,7 @@ namespace C_sharb_voenmeh_coursework.Convertores
             else if (value is FilePC filePC)
             {
                 string extension = new FileInfo(filePC.FullName).Extension;
-                FileInfo? imagePath = Ico.GetImagePath(extension);
+                string imagePath = Ico.GetImagePath(extension);
                 WpfDrawingSettings settings = new WpfDrawingSettings()
                 {
                     TextAsGeometry = false,
@@ -93,13 +93,13 @@ namespace C_sharb_voenmeh_coursework.Convertores
               
                 if (imagePath != null)
                 {
-                    BitmapImage bitmapSourse = new BitmapImage(new Uri(imagePath.FullName));
+                    BitmapImage bitmapSourse = new BitmapImage(new Uri(imagePath));
                     return bitmapSourse;
                 }
                 else
                 {
                     //Системные иконки windows
-                    Icon ico = Icon.ExtractAssociatedIcon(filePC.FullName);
+                    Icon ico = Icon.ExtractAssociatedIcon(filePC.FullName); // получение системной иконки
                     Bitmap bitmap = ico.ToBitmap(); 
                     return BitmapBitmapSourse(bitmap); 
                 }
