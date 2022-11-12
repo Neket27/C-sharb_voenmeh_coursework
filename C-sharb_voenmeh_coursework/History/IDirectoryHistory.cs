@@ -8,7 +8,8 @@ namespace app.History
         #region Variebles
 
         bool CanMoveBack { get;}
-        bool CanMoveForward { get;}
+        bool CanMoveForward { get; set; }
+        bool CanMoveClose { get; set; }
         DirectoryNode Current { get; set; }
 
         #endregion

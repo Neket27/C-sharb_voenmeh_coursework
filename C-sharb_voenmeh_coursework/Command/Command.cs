@@ -10,7 +10,7 @@ public class Command: FunctionCommand
   #region Commands
     public ICommand OpenCommand { get; set; }
     public ICommand ClickCommand { get; set; }
-    public ICommand CloseCommand { get; set; }
+    public DelegateCommand CloseCommand { get; set; }
 
     public ICommand CopyCommand { get; set; }
     public ICommand PasteCommand { get; set; }
@@ -27,7 +27,7 @@ public class Command: FunctionCommand
     {
         History = new DirectoryHistory("Этот компьютер", "Этот компьютер");
         OpenCommand = new DelegateCommand(Open);
-        CloseCommand = new DelegateCommand(Close);
+        CloseCommand = new DelegateCommand(Close,OnCanClose);
         ClickCommand = new Explorer.Shared.ViewModels.DelegateCommand(Click);
         MoveBackCommand = new DelegateCommand(OnMoveBack, OnCanMoveBack);
         MoveForwardCommand = new DelegateCommand(OnMoveForward, OnCanMoveForward);
@@ -52,10 +52,18 @@ public class Command: FunctionCommand
     {
         MoveBackCommand?.RaiseCanExecuteChanged();
         MoveForwardCommand?.RaiseCanExecuteChanged();
+        CloseCommand?.RaiseCanExecuteChanged();
+        
     }
 
     private bool OnCanMoveForward(object obj) => History.CanMoveForward;
-    private bool OnCanMoveBack(object obj) => History.CanMoveBack;
+
+    private bool OnCanMoveBack(object obj)
+    {
+        return  History.CanMoveBack;
+    }
+
+    private bool OnCanClose(object obj) => History.CanMoveClose;
 
     private void OnMoveForward(object obj)
     {

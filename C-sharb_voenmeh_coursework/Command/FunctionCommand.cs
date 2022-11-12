@@ -1,12 +1,10 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using app.History;
 using app.models;
 using app.models.Entity;
-using GongSolutions.Wpf.DragDrop;
 using Microsoft.VisualBasic.FileIO;
 
 namespace C_sharb_voenmeh_coursework.Command;
@@ -19,6 +17,7 @@ public class FunctionCommand : ModelOutput
     private DirectoryInfo SaveCopyDirectory;
     private bool FlagCut = false;
     private FilePC SaveCutFile;
+    private DirectoryPC SaveCutDirectory;
     private bool FlagCopyFile;
     public IDirectoryHistory History { get; set; }
     
@@ -138,13 +137,22 @@ public class FunctionCommand : ModelOutput
             
                 if (FlagCut)
                 {
-                    string path1 = SaveCutFile.FullName;
-                    string name1 = SaveCutFile.Name;
-                    string path2 = directoryPc.FullName + "\\"+SaveCutFile.Name;
-                    string name2 = directoryPc.Name;
-                    File.Copy (path1, path2, true);
-                    File.Delete(path1);
-                    FlagCut = false;
+                    if (FlagCopyFile)
+                    {
+                        string path1 = SaveCutFile.FullName;
+                        string name1 = SaveCutFile.Name;
+                        string path2 = directoryPc.FullName + "\\" + SaveCutFile.Name;
+                        string name2 = directoryPc.Name;
+                        File.Copy(path1, path2, true);
+                        File.Delete(path1);
+                        FlagCut = false;
+                    }
+                    else
+                    {
+                        FileSystem.CopyDirectory(SaveCutDirectory.FullName,FilePath+ "\\" + SaveCutDirectory.Name );
+                        FileSystem.DeleteDirectory(SaveCutDirectory.FullName,DeleteDirectoryOption.DeleteAllContents);
+                       FlagCut = false;
+                    }
                 }
                 else
                 {
@@ -163,26 +171,30 @@ public class FunctionCommand : ModelOutput
         {
             if (parameter is DirectoryPC directoryPc)
             {
-                FilePath = directoryPc.FullName;
-                DirectoryInfo directoryInfo = new DirectoryInfo(FilePath);
-                directoryInfo.Delete();
+                FileSystem.DeleteDirectory(directoryPc.FullName,DeleteDirectoryOption.DeleteAllContents);
                 OpenDirectory();
             }
 
             if (parameter is FilePC filePc)
             {
-                FileInfo fileInfo = new FileInfo(filePc.FullName);
-                fileInfo.Delete();
+                FileSystem.DeleteFile(filePc.FullName);
                 OpenDirectory();
             }
         }
 
         protected void Cut(object parameter)
         {
+            if (parameter is DirectoryPC directoryPc)
+            {
+                FlagCut = true;
+                SaveCutDirectory = directoryPc;
+            }
+            
             if (parameter is FilePC filePc)
             {
                 FlagCut = true;
                 SaveCutFile = filePc;
+                FlagCopyFile = true;
             }
         }
         

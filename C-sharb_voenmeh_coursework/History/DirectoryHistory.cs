@@ -6,7 +6,7 @@ namespace C_sharb_voenmeh_coursework.History
     internal class DirectoryHistory : IDirectoryHistory
     {
         #region Variebles
-
+        
         public DirectoryNode Current { get; set; } //Поле Current находится в этом классе и сюда наследуется интерфейс IEnumerable для перечисления Сurrent. В IEnumerable поле Сurrent хранится как бы в массиве Сurrent1, Сurrent2.., а у каждого Сurrent есть поле с сылкой на предыдущий и следующий Сurrent. Так у Сurrent3 будет PreviousNode=Сurrent2, а NextNode=Сurrent4
 
         #endregion
@@ -28,8 +28,14 @@ namespace C_sharb_voenmeh_coursework.History
 
         #region Functions
 
-        public bool CanMoveBack => Current.PreviousNode != null;
-        public bool CanMoveForward => Current.NextNode != null;
+        public bool CanMoveBack => Current.PreviousNode != null; //если у текущего Current предыдущая директория не равна null, то в CanMoveBack присваиваем true
+        public bool CanMoveForward
+        {
+            get => Current.NextNode != null;
+            set => throw new NotImplementedException();
+        }
+
+        public bool CanMoveClose { get; set; } = false;
 
 
         public void Add(string filePath, string name)
@@ -38,7 +44,7 @@ namespace C_sharb_voenmeh_coursework.History
             Current.NextNode = node; // текущему ноду ставим в NextNode новый нод
             node.PreviousNode = Current; // А у нового нода PreviousNode записываем текущий нод
             Current = node; // Меняем текущий нод на новый
-
+            CanMoveClose = true;
             RaiseHistoryChanged();
         }
 
@@ -48,27 +54,26 @@ namespace C_sharb_voenmeh_coursework.History
             Current.PreviousNode = directoryNode;
             Current.NextNode = directoryNode;
             Current = directoryNode;
+            CanMoveClose = false;
             RaiseHistoryChanged();
         }
 
 
         public void MoveBack()
         {
-            var prev = Current.PreviousNode;
-            Current = prev;
+            Current = Current.PreviousNode;
             RaiseHistoryChanged();
         }
 
         public void MoveForward()
         {
-            var next = Current.NextNode;
-            Current = next;
+            Current = Current.NextNode;
             RaiseHistoryChanged();
         }
 
-        private void RaiseHistoryChanged()
+        private void RaiseHistoryChanged() // обновление активности кнопок на форме
         {
-            HistoryChanged?.Invoke(this, EventArgs.Empty);
+            HistoryChanged?.Invoke(null, null);
         }
 
         #endregion
