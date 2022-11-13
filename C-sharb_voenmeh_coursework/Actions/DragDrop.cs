@@ -6,6 +6,7 @@ using app.models;
 using app.models.Entity;
 using C_sharb_voenmeh_coursework.Command;
 using GongSolutions.Wpf.DragDrop;
+using Microsoft.VisualBasic.FileIO;
 
 namespace C_sharb_voenmeh_coursework;
 
@@ -40,21 +41,15 @@ public class DragDrop : IDropTarget
         }
         else
         {
-            var dataObject = dropInfo.Data as DataObject;
-            if (dataObject != null && dataObject.ContainsFileDropList())
-            {
-                var files = dataObject.GetFileDropList();
-                foreach (var path in files)
-                {
-                    string path2 = entityDirectoryAndFile.FullName + "\\" + new FileInfo(path).Name;
-                    File.Copy(path, path2, true);
-                    FunctionCommand.OpenDirectory();
-                    ((IList) dropInfo.DragInfo.SourceCollection).Remove(path);
-                }
+            DirectoryPC directoryPc = (DirectoryPC) dropInfo.Data;
+            FileSystem.CopyDirectory(directoryPc.FullName, entityDirectoryAndFile.FullName + "\\" + directoryPc.Name, true);
+            ((IList) dropInfo.DragInfo.SourceCollection).Remove(directoryPc);
+            FileSystem.DeleteDirectory(directoryPc.FullName,DeleteDirectoryOption.DeleteAllContents);
+            FunctionCommand.OpenDirectory();
             }
         }
     }
-}
+
 
 
 //
