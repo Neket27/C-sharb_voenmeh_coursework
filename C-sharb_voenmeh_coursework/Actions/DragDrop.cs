@@ -1,7 +1,6 @@
 using System.Collections;
 using System.IO;
 using System.Windows;
-using app;
 using app.models;
 using app.models.Entity;
 using C_sharb_voenmeh_coursework.Command;
@@ -14,6 +13,7 @@ public class DragDrop : IDropTarget
 {
     public static DragDrop Instance = new DragDrop();
     private FunctionCommand FunctionCommand = new FunctionCommand();
+    private string SaveValue;
 
     public void DragOver(IDropInfo dropInfo)
     {
@@ -24,6 +24,7 @@ public class DragDrop : IDropTarget
 
         var dataObject = dropInfo.Data as IDataObject;
         dropInfo.Effects = DragDropEffects.Move;
+     
     }
 
 
@@ -46,60 +47,7 @@ public class DragDrop : IDropTarget
             ((IList) dropInfo.DragInfo.SourceCollection).Remove(directoryPc);
             FileSystem.DeleteDirectory(directoryPc.FullName,DeleteDirectoryOption.DeleteAllContents);
             FunctionCommand.OpenDirectory();
-            }
         }
     }
-
-
-
-//
-//
-// public void DragOver(IDropInfo dropInfo)
-// {
-//     if (dropInfo.TargetCollection is ObservableCollection<EntityDirectoryAndFile> targetCollection)
-//     {
-//         if (dropInfo.Data is EntityDirectoryAndFile fileEntityViewModel)
-//         {
-//             if (dropInfo.TargetItem == null && !targetCollection.Contains(fileEntityViewModel))
-//             {
-//                 dropInfo.Effects = DragDropEffects.Move;
-//                 dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
-//                 dropInfo.EffectText ="Moveto";
-//                 dropInfo.DestinationText = "в папку";
-//             }
-//
-//             if ((dropInfo.TargetItem is EntityDirectoryAndFile directoryViewModel) && (directoryViewModel != fileEntityViewModel))
-//             {
-//                 dropInfo.Effects =  DragDropEffects.Move;
-//                 dropInfo.DropTargetAdorner = DropTargetAdorners.Highlight;
-//                 dropInfo.EffectText ="Moveto2";
-//                 dropInfo.DestinationText = "в папку2";
-//
-//             }
-//         }
-//
-//         if (dropInfo.Data is ICollection<object> collectionFileEntityViewModel)
-//         {
-//                     
-//         }
-//     }
-//         
-// }
-//
-// public void Drop(IDropInfo dropInfo)
-// {
-//     FilePC dataObject = dropInfo.Data as FilePC;
-//     if (dataObject != null )
-//     {
-//         var files = dataObject;
-//         DirectoriesAndFiles.Add(files);
-//         // Items.Add(files);
-//         // foreach (var file in files)
-//         // {
-//         //     Items.Add(new FilePC(file));
-//         //     DirectoriesAndFiles.Add(new FilePC(file));
-//         //
-//         // }
-//         OpenDirectory();
-//     }
-// }
+        
+}
