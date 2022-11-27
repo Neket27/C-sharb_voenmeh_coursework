@@ -14,6 +14,8 @@ public class ModelOutput : BaseViewModel
     public EntityDirectoryAndFile SelectedFileEntity { get; set; }
     public string PathIcon { get; set; }
     public string TextInPreview { get; set; }
-    public string FilePath { get; set; } = "Р­С‚РѕС‚ РєРѕРјРїСЊСЋС‚РµСЂ";
-    public string Name { get; set; } = "Р­С‚РѕС‚ РєРѕРјРїСЊСЋС‚РµСЂ";
+    public string FilePath { get; set; } = "Этот компьютер";
+    public string Name { get; set; } = "Этот компьютер";
+
+
 }

@@ -1,4 +1,5 @@
-﻿using C_sharb_voenmeh_coursework.Command;
+﻿using C_sharb_voenmeh_coursework;
+using C_sharb_voenmeh_coursework.Command;
 
 namespace app
 {
@@ -15,6 +16,7 @@ namespace app
         {
             CallLeftPanel();
             OpenDirectory();
+            
         }
 
         #endregion
