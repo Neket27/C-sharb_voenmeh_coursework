@@ -133,6 +133,9 @@ public class FunctionCommand : ModelOutput
         if (parameter is DirectoryPC directoryPc)
         {
             FilePath = directoryPc.FullName;
+            
+            string source = FilePath;
+            string dest = FilePath;
 
             if (FlagCut)
             {
@@ -164,8 +167,9 @@ public class FunctionCommand : ModelOutput
                 {
                     if (SaveCopyFile.FullName == FilePath + "\\" + SaveCopyFile.Name)
                     {
-                        string source = FilePath;
-                        string dest = FilePath;
+                        ////count copy
+                        source = FilePath;
+                        dest = FilePath;
                         var destFilePath = dest + @"\" + SaveCopyFile.Name;
 
                         var postfix = 1;
@@ -184,7 +188,7 @@ public class FunctionCommand : ModelOutput
 
                             postfix++;
                         }
-
+                        ///////////////
                         File.Copy(source + @"\" + SaveCopyFile.Name, destFilePath);
                     }
                     else
@@ -194,8 +198,39 @@ public class FunctionCommand : ModelOutput
                 }
                 else
                 {
-                    FileSystem.CopyDirectory(SaveCopyDirectory.FullName, FilePath + "\\" + SaveCopyDirectory.Name);
+                    // FileSystem.CopyDirectory(SaveCopyDirectory.FullName, FilePath + "\\" + SaveCopyDirectory.Name);
+                    
+                    if (SaveCopyDirectory.FullName == FilePath+ "\\" + SaveCopyDirectory.Name )
+                    {
+                    ////count copy
+                     source = FilePath;
+                     dest = FilePath;
+                    var destFilePath = dest + @"\" + SaveCopyDirectory.Name;
+                    var postfix = 1;
+                    while (Directory.Exists(destFilePath))
+                    {
+                        var fileNameNoExt = Path.GetFileNameWithoutExtension(destFilePath);
+                        var fileExt = Path.GetExtension(destFilePath);
+
+                        if (postfix == 1)
+                            destFilePath = dest + @"\" + fileNameNoExt + postfix + fileExt;
+                        else
+                            destFilePath = dest + @"\" +
+                                           fileNameNoExt.Remove(
+                                               fileNameNoExt.Length - postfix.ToString().Length) +
+                                           postfix + fileExt;
+
+                        postfix++;
+                    }
+
+                    FileSystem.CopyDirectory(source + @"\" + SaveCopyDirectory.Name, destFilePath);
+                    /////////
                 }
+                    else
+                    { 
+                        FileSystem.CopyDirectory(SaveCopyDirectory.FullName, FilePath + "\\" + SaveCopyDirectory.Name); 
+                    }
+                    }
 
                 FlagCopyFile = false;
             }
