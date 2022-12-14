@@ -1,12 +1,23 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Windows.Shapes;
 using app.History;
 using app.models;
 using app.models.Entity;
+using C_sharb_voenmeh_coursework.Actions;
+using GroupDocs.Viewer;
+using GroupDocs.Viewer.Options;
 using Microsoft.VisualBasic.FileIO;
+using Path = System.IO.Path;
+
 
 namespace C_sharb_voenmeh_coursework.Command;
 
@@ -20,10 +31,15 @@ public class FunctionCommand : ModelOutput
     private FilePC SaveCutFile;
     private DirectoryPC SaveCutDirectory;
     private bool FlagCopyFile;
+    private object EntetyPcDoRename;
+    private string nameFileOrDir = "";
+    private bool CreateDir;
+    private bool CreateFileText;
+    public FileStream file1;
+
     public IDirectoryHistory History { get; set; }
 
     #endregion
-
 
     #region Functions
 
@@ -38,7 +54,7 @@ public class FunctionCommand : ModelOutput
         }
         else
         {
-            FilePath = ((MainWindow) Application.Current.MainWindow).PathFile.Text;
+            FilePath = ((MainWindow)Application.Current.MainWindow).PathFile.Text;
             var DirectoryInfo = new DirectoryInfo(FilePath);
 
             foreach (var directory in DirectoryInfo.GetDirectories())
@@ -53,7 +69,7 @@ public class FunctionCommand : ModelOutput
     public void Open(object parameter)
     {
         if (parameter is String)
-            parameter = new DirectoryPC((String) parameter);
+            parameter = new DirectoryPC((string)parameter);
 
         if (parameter is DirectoryPC directoryPc)
         {
@@ -102,7 +118,33 @@ public class FunctionCommand : ModelOutput
                     fstream.Read(buffer, 0, buffer.Length);
                     TextInPreview = Encoding.Default.GetString(buffer);
                 }
+
+                FlowDocument document = new FlowDocument();
+
+                //Read the file stream to a Byte array 'data'
+                TextRange txtRange = null;
+
+                //using (MemoryStream stream = new MemoryStream(da))
+                //{
+                //    // create a TextRange around the entire document
+                //    txtRange = new TextRange(document.ContentStart, document.ContentEnd);
+                //    txtRange.Load(stream, DataFormats.Rtf);
+                //}
             }
+
+            else if (fileInfo.Extension == ".rtf")
+            {
+                RichTextBox rtb = new RichTextBox();
+                string rtf = File.ReadAllText(filePc.FullName);
+                using (MemoryStream stream = new MemoryStream(Encoding.Default.GetBytes(rtf)))
+                    rtb.Selection.Load(stream, DataFormats.Rtf);
+
+                string text = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd).Text;
+                // string[] lines = text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                TextInPreview = text;
+            }
+
+
             else
                 TextInPreview = "";
         }
@@ -110,8 +152,12 @@ public class FunctionCommand : ModelOutput
             PathIcon = "";
     }
 
+
+ 
+
     protected void Copy(object parameter)
     {
+        FlagCut = false;
         if (parameter is DirectoryPC directoryPc)
         {
             FilePath = directoryPc.FullName;
@@ -127,129 +173,148 @@ public class FunctionCommand : ModelOutput
 
     protected void Paste(object? parameter)
     {
-        if (parameter == null)
-            parameter = new DirectoryPC(FilePath);
-
-        if (parameter is DirectoryPC directoryPc)
+        try
         {
-            FilePath = directoryPc.FullName;
-            
-            string source = FilePath;
-            string dest = FilePath;
-
-            if (FlagCut)
+            if (parameter is FilePC filePc)
             {
-                if (FlagCopyFile)
+                string path = Path.GetDirectoryName(filePc.FullName);
+                parameter = new DirectoryPC(path);
+            }
+
+            if (parameter == null)
+                parameter = new DirectoryPC(FilePath);
+
+
+            if (parameter is DirectoryPC directoryPc)
+            {
+                FilePath = directoryPc.FullName;
+
+                string source = FilePath;
+                string dest = FilePath;
+
+                if (FlagCut)
                 {
-                    ///
+                    if (FlagCopyFile)
+                    {
 
-
-                    ////
-
-                    string path1 = SaveCutFile.FullName;
-                    string name1 = SaveCutFile.Name;
-                    string path2 = directoryPc.FullName + "\\" + SaveCutFile.Name;
-                    string name2 = directoryPc.Name;
-                    File.Copy(path1, path2, true);
-                    File.Delete(path1);
-                    FlagCut = false;
+                        string path1 = SaveCutFile.FullName;
+                        string name1 = SaveCutFile.Name;
+                        string path2 = directoryPc.FullName + "\\" + SaveCutFile.Name;
+                        string name2 = directoryPc.Name;
+                        File.Copy(path1, path2, true); //ошибка после вырезания файла из папки и затем вырезание папки в другую
+                        File.Delete(path1);
+                        FlagCut = false;
+                        FlagCopyFile = false;
+                    }
+                    else
+                    {
+                        FileSystem.CopyDirectory(SaveCutDirectory.FullName, FilePath + "\\" + SaveCutDirectory.Name);
+                        OpenDirectory();
+                        // FileSystem.DeleteDirectory(SaveCutDirectory.FullName, DeleteDirectoryOption.DeleteAllContents);
+                        FileSystem.DeleteDirectory(SaveCutDirectory.FullName, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
+                        FlagCut = false;
+                    }
                 }
                 else
                 {
-                    FileSystem.CopyDirectory(SaveCutDirectory.FullName, FilePath + "\\" + SaveCutDirectory.Name);
-                    FileSystem.DeleteDirectory(SaveCutDirectory.FullName, DeleteDirectoryOption.DeleteAllContents);
-                    FlagCut = false;
-                }
-            }
-            else
-            {
-                if (FlagCopyFile)
-                {
-                    if (SaveCopyFile.FullName == FilePath + "\\" + SaveCopyFile.Name)
+                    if (FlagCopyFile)
                     {
-                        ////count copy
-                        source = FilePath;
-                        dest = FilePath;
-                        var destFilePath = dest + @"\" + SaveCopyFile.Name;
-
-                        var postfix = 1;
-                        while (File.Exists(destFilePath))
+                        if (SaveCopyFile.FullName == FilePath + "\\" + SaveCopyFile.Name)
                         {
-                            var fileNameNoExt = Path.GetFileNameWithoutExtension(destFilePath);
-                            var fileExt = Path.GetExtension(destFilePath);
+                            ////count copy
+                            source = FilePath;
+                            dest = FilePath;
+                            var destFilePath = dest + @"\" + SaveCopyFile.Name;
 
-                            if (postfix == 1)
-                                destFilePath = dest + @"\" + fileNameNoExt + postfix + fileExt;
-                            else
-                                destFilePath = dest + @"\" +
-                                               fileNameNoExt.Remove(
-                                                   fileNameNoExt.Length - postfix.ToString().Length) +
-                                               postfix + fileExt;
+                            var postfix = 1;
+                            while (File.Exists(destFilePath))
+                            {
+                                var fileNameNoExt = Path.GetFileNameWithoutExtension(destFilePath);
+                                var fileExt = Path.GetExtension(destFilePath);
 
-                            postfix++;
+                                if (postfix == 1)
+                                   // destFilePath = dest + @"\" + fileNameNoExt + postfix + fileExt;
+                                    destFilePath = dest + @"\" + fileNameNoExt + postfix  + fileExt;
+                                else
+                                    destFilePath = dest + @"\" +
+                               fileNameNoExt.Remove(fileNameNoExt.Length - postfix.ToString().Length) +postfix + fileExt;
+
+                                postfix++;
+                            }
+                            ///////////////
+                            File.Copy(source + @"\" + SaveCopyFile.Name, destFilePath);
                         }
-                        ///////////////
-                        File.Copy(source + @"\" + SaveCopyFile.Name, destFilePath);
-                    }
-                    else
-                    {
-                        SaveCopyFile.CopyTo(FilePath + "\\" + SaveCopyFile.Name);
-                    }
-                }
-                else
-                {
-                    // FileSystem.CopyDirectory(SaveCopyDirectory.FullName, FilePath + "\\" + SaveCopyDirectory.Name);
-                    
-                    if (SaveCopyDirectory.FullName == FilePath+ "\\" + SaveCopyDirectory.Name )
-                    {
-                    ////count copy
-                     source = FilePath;
-                     dest = FilePath;
-                    var destFilePath = dest + @"\" + SaveCopyDirectory.Name;
-                    var postfix = 1;
-                    while (Directory.Exists(destFilePath))
-                    {
-                        var fileNameNoExt = Path.GetFileNameWithoutExtension(destFilePath);
-                        var fileExt = Path.GetExtension(destFilePath);
-
-                        if (postfix == 1)
-                            destFilePath = dest + @"\" + fileNameNoExt + postfix + fileExt;
                         else
-                            destFilePath = dest + @"\" +
-                                           fileNameNoExt.Remove(
-                                               fileNameNoExt.Length - postfix.ToString().Length) +
-                                           postfix + fileExt;
-
-                        postfix++;
+                        {
+                            SaveCopyFile.CopyTo(FilePath + "\\" + SaveCopyFile.Name);
+                        }
                     }
-
-                    FileSystem.CopyDirectory(source + @"\" + SaveCopyDirectory.Name, destFilePath);
-                    /////////
-                }
                     else
-                    { 
-                        FileSystem.CopyDirectory(SaveCopyDirectory.FullName, FilePath + "\\" + SaveCopyDirectory.Name); 
-                    }
+                    {
+                        // FileSystem.CopyDirectory(SaveCopyDirectory.FullName, FilePath + "\\" + SaveCopyDirectory.Name);
+                        try
+                        {
+                            if (SaveCopyDirectory.FullName == FilePath + "\\" + SaveCopyDirectory.Name || SaveCopyDirectory.FullName == FilePath)
+                            {
+
+                                if (SaveCopyDirectory.FullName == FilePath)
+                                    FilePath = Path.GetDirectoryName(FilePath);
+
+
+                                source = FilePath;
+                                dest = FilePath;
+                                var destFilePath = dest + @"\" + SaveCopyDirectory.Name;
+                                var postfix = 1;
+                                while (Directory.Exists(destFilePath))
+                                {
+                                    var fileNameNoExt = Path.GetFileNameWithoutExtension(destFilePath);
+                                    var fileExt = Path.GetExtension(destFilePath);
+
+                                    if (postfix == 1)
+                                        destFilePath = dest + @"\" + fileNameNoExt + postfix + fileExt;
+                                    else
+                                        destFilePath = dest + @"\" +
+                                                       fileNameNoExt.Remove(
+                                                           fileNameNoExt.Length - postfix.ToString().Length) +
+                                                       postfix + fileExt;
+
+                                    postfix++;
+                                }
+
+                                FileSystem.CopyDirectory(source + @"\" + SaveCopyDirectory.Name, destFilePath);
+                                /////////
+                            }
+                            else
+                            {
+                                FileSystem.CopyDirectory(SaveCopyDirectory.FullName, FilePath + "\\" + SaveCopyDirectory.Name);
+                            }
+                        }
+                        catch { }
                     }
 
-                FlagCopyFile = false;
+                    FlagCopyFile = false;
+                }
+
+                OpenDirectory();
             }
-
-            OpenDirectory();
         }
+        catch { }
     }
 
     protected void Delete(object? parameter)
     {
         if (parameter is DirectoryPC directoryPc)
         {
-            FileSystem.DeleteDirectory(directoryPc.FullName, DeleteDirectoryOption.DeleteAllContents);
+            // FileSystem.DeleteDirectory(directoryPc.FullName, DeleteDirectoryOption.DeleteAllContents);
+
+            FileSystem.DeleteDirectory(directoryPc.FullName, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
             OpenDirectory();
         }
 
         if (parameter is FilePC filePc)
         {
             FileSystem.DeleteFile(filePc.FullName);
+            FileSystem.DeleteFile(filePc.FullName, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
             OpenDirectory();
         }
     }
@@ -270,8 +335,99 @@ public class FunctionCommand : ModelOutput
         }
     }
 
+    protected void Rename(object parameter)
+    {
 
-    protected void CallLeftPanel()
+        EntetyPcDoRename = parameter;
+        IsPanelVisible = true;
+
+        if (EntetyPcDoRename is DirectoryPC directoryPc)
+            Name = directoryPc.Name;
+        if (EntetyPcDoRename is FilePC filePc)
+            Name = filePc.Name;
+
+    }
+
+
+    protected void RenameClose(object parameter)
+    {
+        string nameFile = ((MainWindow)Application.Current.MainWindow).TextBoxRename.Text;
+        if (CreateDir == true && EntetyPcDoRename is DirectoryPC dir)
+        {
+            Directory.CreateDirectory(dir.FullName + "\\" + nameFile);
+            CreateDir = false;
+        }
+        else if (CreateFileText == true && EntetyPcDoRename is DirectoryPC dir2)
+        {
+            File.Create(dir2.FullName + "\\" + nameFile + ".txt");
+            CreateFileText = false;
+        }
+        else
+        {
+
+            if (EntetyPcDoRename is DirectoryPC directoryPc)
+            {
+                if (nameFile != directoryPc.Name)
+                {
+                    string curDir = Path.GetDirectoryName(directoryPc.FullName);
+                    Directory.Move(directoryPc.FullName, Path.Combine(curDir, nameFile));
+                    OpenDirectory();
+                }
+            }
+
+            if (EntetyPcDoRename is FilePC filePc)
+            {
+                string curDir = Path.GetDirectoryName(filePc.FullName);
+                try
+                {
+                    File.Move(filePc.FullName, Path.Combine(curDir, nameFile));
+                }
+                catch { }
+                OpenDirectory();
+            }
+        }
+        IsPanelVisible = false;
+        OpenDirectory();
+    }
+
+
+    protected void CreateDirectory(object parameter)
+    {
+        IsPanelVisible = true;
+        CreateDir = true;
+
+
+        if (parameter is FilePC filePc)
+        {
+            string path = Path.GetDirectoryName(filePc.FullName);
+            parameter = new DirectoryPC(path);
+        }
+
+        if (parameter == null)
+            parameter = new DirectoryPC(FilePath);
+
+        EntetyPcDoRename = parameter;
+    }
+
+    protected void CreateTextFile(object parameter)
+    {
+        IsPanelVisible = true;
+        CreateFileText = true;
+
+        if (parameter is FilePC filePc)
+        {
+            string path = Path.GetDirectoryName(filePc.FullName);
+            parameter = new DirectoryPC(path);
+        }
+
+        if (parameter == null)
+            parameter = new DirectoryPC(FilePath);
+
+        EntetyPcDoRename = parameter;
+    }
+
+
+    public void CallLeftPanel()
     {
         string UserName = Environment.UserName;
         EntityDirectoryAndFile DirDesktop = new DirectoryPC("C:\\Users\\" + UserName + "\\Desktop");
@@ -293,6 +449,15 @@ public class FunctionCommand : ModelOutput
         DirectoriesAndFilesLeftPanel.Add(DirPictures);
         DirectoriesAndFilesLeftPanel.Add(DirMusic);
     }
+
+
+    protected void UpdateFilePath(object parameter)
+    {
+        IsPanelVisible = true;
+        Open(FilePath);
+
+    }
+
 
     #endregion
 }

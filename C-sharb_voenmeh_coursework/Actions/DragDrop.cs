@@ -37,64 +37,82 @@ public class DragDrop : ModelOutput, IDropTarget
             entityDirectoryAndFile = new DirectoryPC(pathDirectory);
         }
 
-        if (dropInfo.Data is FilePC)
+        if (dropInfo.Data is FilePC filePc)
         {
-            FilePC filePc = (FilePC) dropInfo.Data;
-            // if (filePc.FullName == entityDirectoryAndFile.FullName + "\\" + filePc.Name)
-            // {
-            //     var arrCharLettersName=filePc.Name.ToCharArray();
-            //     File.Copy(filePc.FullName, entityDirectoryAndFile.FullName + "\\" + filePc.Name + " копия("+arrCharLettersName[arrCharLettersName.Length-2]+")", true);
-            // }
-            // else
-                File.Copy(filePc.FullName, entityDirectoryAndFile.FullName + "\\" + filePc.Name, true);
-            ((IList) dropInfo.DragInfo.SourceCollection).Remove(filePc);
-            File.Delete(filePc.FullName);
-            FunctionCommand.OpenDirectory();
+            if (filePc.FullName != entityDirectoryAndFile.FullName + "\\" + filePc.Name)
+            {
+                try
+                {
+                    File.Copy(filePc.FullName, entityDirectoryAndFile.FullName + "\\" + filePc.Name, true);
+                    ((IList)dropInfo.DragInfo.SourceCollection).Remove(filePc);
+                    // File.Delete(filePc.FullName);
+                    FileSystem.DeleteFile(filePc.FullName, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
+                }
+                catch { }
+           }
         }
         else
         {
             var dataObject = dropInfo.Data as DataObject;
-           
-            if (dataObject != null && dataObject.ContainsFileDropList())
+           if (dataObject != null && dataObject.ContainsFileDropList())
             {
                 var files = dataObject.GetFileDropList();
                 foreach (var path in files)
                 {
                     FileInfo fileInfo = new FileInfo(path);
-                    
-                    if(fileInfo.Extension=="")
-                    {
-                       FileSystem.CopyDirectory(path, entityDirectoryAndFile.FullName + "\\" + fileInfo.Name, true);
-                      // FunctionCommand.OpenDirectory();
-                      FunctionCommand.Open(new DirectoryInfo(entityDirectoryAndFile.FullName));
+                        if (fileInfo.Extension == "")
+                        {
+                            FileSystem.CopyDirectory(path, entityDirectoryAndFile.FullName + "\\" + fileInfo.Name,
+                                true);
+                            // FunctionCommand.OpenDirectory();
+                            FunctionCommand.Open(new DirectoryInfo(entityDirectoryAndFile.FullName));
+                        }
+                        else
+                        {
+                            string path2 = entityDirectoryAndFile.FullName + "\\" + fileInfo.Name;
+                            File.Copy(path, path2, true);
+                            
+                            // var a = new DirectoryInfo(entityDirectoryAndFile.FullName);
+                            // var f = new DirectoryPC(a);
+                            // FunctionCommand.Open(f);
+                        }
                     }
-                    else
-                    {
-                        string path2 = entityDirectoryAndFile.FullName + "\\" + fileInfo.Name;
-                        File.Copy(path, path2, true);
-                        FunctionCommand.OpenDirectory();
-                        
-                      // var a = new DirectoryInfo(entityDirectoryAndFile.FullName);
-                      // var f = new DirectoryPC(a);
-                      // FunctionCommand.Open(f);
-                    }
-                  //  ((IList) dropInfo.DragInfo.SourceCollection).Remove(path);
+                    //  ((IList) dropInfo.DragInfo.SourceCollection).Remove(path);
                 }
-            }
             else
             {
                 var dataObjectDir = dropInfo.Data as DirectoryPC;
-                FileSystem.CopyDirectory(dataObjectDir.FullName, entityDirectoryAndFile.FullName + "\\" + dataObjectDir.Name, true);
-                FileSystem.DeleteDirectory(dataObjectDir.FullName,DeleteDirectoryOption.DeleteAllContents);
-                FunctionCommand.OpenDirectory();
-                var b =(IList) dropInfo.DragInfo.SourceCollection;
-                
-                ((IList) dropInfo.DragInfo.SourceCollection).Remove(dataObjectDir.FullName);
-               
+
+                if (dataObjectDir.FullName != entityDirectoryAndFile.FullName + "\\" + dataObjectDir.Name)
+                {
+                    bool flagExistence = false;
+                    var DirectoryInfo = new DirectoryInfo(entityDirectoryAndFile.FullName);
+                    foreach (var dir in DirectoryInfo.GetDirectories())
+                    {
+                        if (dir.Name == dataObjectDir.Name)
+                            flagExistence = true;
+                    }
+
+                    if (flagExistence == false)
+                    {
+                        try
+                        {
+                            FileSystem.CopyDirectory(dataObjectDir.FullName,
+                            entityDirectoryAndFile.FullName + "\\" + dataObjectDir.Name, true);
+                            File.SetAttributes(dataObjectDir.FullName, FileAttributes.Normal);
+                            //FileSystem.DeleteDirectory(dataObjectDir.FullName, DeleteDirectoryOption.DeleteAllContents); //выдаёт ошибку по доступу
+                            FileSystem.DeleteDirectory(dataObjectDir.FullName, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
+                            ((IList)dropInfo.DragInfo.SourceCollection).Remove(dataObjectDir);
+                            flagExistence = false;
+                        }
+                        catch { }
+                    }
+
+                }
             }
         }
 
-       
+        FunctionCommand.OpenDirectory();
     }
 }
 

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:app"
+        xmlns:local2="clr-namespace:C_sharb_voenmeh_coursework.Command"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         Title="Проводник" 
@@ -20,11 +21,19 @@
         Icon="/Resource/Icons/file-manager.ico" 
         ResizeMode="CanResize" 
         WindowStartupLocation="CenterScreen" 
-        FontWeight="Normal">
-        
-        
+        FontWeight="Normal"
+          >
+
+    <Window.InputBindings>
+        <KeyBinding  Command="{Binding CopyCommand}" CommandParameter="{Binding SelectedFileEntity}" Gesture="Ctrl+C" />
+        <KeyBinding  Command="{Binding PasteCommand}" CommandParameter="{Binding SelectedFileEntity}" Gesture="Ctrl+V" />
+    </Window.InputBindings>
+    
+  
+
     <Window.Resources>
         <convertores:FileEntityToImageConverter x:Key="ToImageConverter"></convertores:FileEntityToImageConverter>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
 
         <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
             <Border Background="{TemplateBinding Background}" 
@@ -159,6 +168,7 @@
             <Image Source="{Binding PathIcon}" />
             <MediaElement Source="{Binding PathIcon}" />
             <TextBox BorderBrush="#090d24" BorderThickness="2" Foreground="#e6e8f2"  Template="{StaticResource TextBoxBaseControlTemplate}" Text="{Binding TextInPreview}"></TextBox>
+            <RichTextBox x:Name="rtb"  ></RichTextBox>
         </Grid>
        
         <TextBox Grid.Row="0" 
@@ -193,7 +203,8 @@
                  Grid.Row="1"
                  Grid.RowSpan="3"
                  ItemsSource="{Binding DirectoriesAndFiles}"
-                 SelectedItem="{Binding SelectedFileEntity}" Grid.ColumnSpan="5"
+                 SelectedItem="{Binding SelectedFileEntity}" 
+                 Grid.ColumnSpan="5"
                 dd:DragDrop.IsDropTarget="True"
                 dd:DragDrop.IsDragSource="True"
                 dd:DragDrop.DropHandler="{x:Static ui:DragDrop.Instance}"
@@ -236,7 +247,7 @@
 
                                     <MultiTrigger>
                                         <MultiTrigger.Conditions>
-                                            <Condition Property="IsSelected" Value="True" />
+                                                                        
                                             <!--<Condition Property="Selector.IsSelectionActive" Value="False" />-->
                                         </MultiTrigger.Conditions>
 
@@ -280,7 +291,14 @@
                     <b:InvokeCommandAction Command="{Binding ClickCommand}"
                                            CommandParameter="{Binding SelectedFileEntity}"></b:InvokeCommandAction>
                 </b:EventTrigger>
-            </b:Interaction.Triggers>
+
+
+                <!--<b:EventTrigger EventName="MouseLeave">
+                    <b:InvokeCommandAction Command="{Binding UpdateFilePathCommand}"
+                                CommandParameter="{Binding SelectedFileEntity}"></b:InvokeCommandAction>
+                    </b:EventTrigger>-->
+
+                </b:Interaction.Triggers>
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -288,29 +306,88 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"></ColumnDefinition>
                             <ColumnDefinition Width="auto"></ColumnDefinition>
+                            
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
 
                         <Grid  Grid.Column="0" Margin="10,10"  Width="30" Height="35">
                             <Image VerticalAlignment="Top" Source="{Binding .,Converter={StaticResource ToImageConverter}}"></Image>
 
-                            <!--<Image Grid.Column="0" Source="Resource/Ico/folder.ico" Width="20" Height="20"></Image>-->
+                           
                         </Grid>
 
-                        <TextBlock Foreground="#e6e8f2" FontSize="14" Height="20" Grid.Column="1" Text="{Binding Name}" />
+                        <TextBlock x:Name="nnn" Foreground="#e6e8f2" FontSize="14" Height="20" Grid.Column="1" Text="{Binding Name}" />
+                        <!--<Button Content="Enable">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsEnabled}" Value="True">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>-->
+
+                     
+
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            
+
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Копировать" Command="{Binding CopyCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
                     <MenuItem Header="Вставить" Command="{Binding PasteCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
                     <MenuItem Header="Вырезать" Command="{Binding CutCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
                     <MenuItem Header="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
+                    <MenuItem Header="Переименовать" Command="{Binding RenameCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
+                    <MenuItem Header="Создать папку" Command="{Binding CreateDirectoryCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
+                    <MenuItem Header="Создать текстовый файл" Command="{Binding CreateTextFileCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
                 </ContextMenu>
             </ListBox.ContextMenu>
 
         </ListBox>
+
+
+        <Border Width="180px" Height="25px" Background="#dfdff0" HorizontalAlignment ="Right" CornerRadius="20,20,20,20" Grid.Row="3" Grid.Column="2"
+                Visibility="{Binding IsPanelVisible, Converter={StaticResource BooleanToVisibility}}">
+
+            <TextBox  
+                 x:Name="TextBoxRename"
+                 Margin="15,0,15,0"
+                 VerticalAlignment="Center"
+                 Foreground="#c7621a"
+                 Text="{Binding Name}">
+
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="MouseDoubleClick">
+                        <b:InvokeCommandAction Command="{Binding DataContext.RenameCloseCommand ,ElementName=Window}"
+                                           CommandParameter="{Binding Text,ElementName= Text}">
+                        </b:InvokeCommandAction>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="default">
+                                <Setter Property="FontWeight" Value="Normal" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+
+            </TextBox>
+
+        </Border>
+
+
 
     </Grid>
 </Window>

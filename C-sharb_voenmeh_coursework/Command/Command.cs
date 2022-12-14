@@ -16,6 +16,11 @@ public class Command: FunctionCommand
     public ICommand PasteCommand { get; set; }
     public ICommand CutCommand { get; set; }
     public ICommand DeleteCommand { get; set; }
+    public ICommand RenameCommand { get; set; }
+    public ICommand RenameCloseCommand { get; set; }
+    public ICommand UpdateFilePathCommand { get; set; }
+    public ICommand CreateDirectoryCommand { get; set; }
+    public ICommand CreateTextFileCommand { get; set; }
     public DelegateCommand MoveBackCommand { get; set; }
     public DelegateCommand MoveForwardCommand { get; set; }
 
@@ -36,6 +41,12 @@ public class Command: FunctionCommand
         PasteCommand = new DelegateCommand(Paste);
         DeleteCommand = new DelegateCommand(Delete);
         CutCommand = new DelegateCommand(Cut);
+        RenameCommand = new DelegateCommand(Rename);
+        RenameCloseCommand = new DelegateCommand(RenameClose);
+        UpdateFilePathCommand = new DelegateCommand(UpdateFilePath);
+        CreateDirectoryCommand = new DelegateCommand(CreateDirectory);
+        CreateTextFileCommand = new DelegateCommand(CreateTextFile);
+
 
         Name = History.Current.DirectoryPathName;
         FilePath = History.Current.DirectoryPath;
