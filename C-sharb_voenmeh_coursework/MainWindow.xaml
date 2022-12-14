@@ -383,6 +383,13 @@
                     </Style>
                 </TextBox.Style>
 
+
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding DataContext.RenameCloseCommand ,ElementName=Window}"
+                                           CommandParameter="{Binding Text,ElementName= Text}" Key="Enter" />
+                </TextBox.InputBindings>
+
+
             </TextBox>
 
         </Border>

@@ -32,7 +32,6 @@ public class FunctionCommand : ModelOutput
     private DirectoryPC SaveCutDirectory;
     private bool FlagCopyFile;
     private object EntetyPcDoRename;
-    private string nameFileOrDir = "";
     private bool CreateDir;
     private bool CreateFileText;
     public FileStream file1;
@@ -46,23 +45,26 @@ public class FunctionCommand : ModelOutput
     public void OpenDirectory()
     {
         DirectoriesAndFiles.Clear();
-
-        if (Name == "Этот компьютер")
+        try
         {
-            foreach (var logicalDrive in Directory.GetLogicalDrives()) // Считываем все диски пк в коллекцию
-                DirectoriesAndFiles.Add(new DirectoryPC(logicalDrive));
-        }
-        else
-        {
-            FilePath = ((MainWindow)Application.Current.MainWindow).PathFile.Text;
-            var DirectoryInfo = new DirectoryInfo(FilePath);
+            if (Name == "Этот компьютер")
+            {
+                foreach (var logicalDrive in Directory.GetLogicalDrives()) // Считываем все диски пк в коллекцию
+                    DirectoriesAndFiles.Add(new DirectoryPC(logicalDrive));
+            }
+            else
+            {
+                FilePath = ((MainWindow)Application.Current.MainWindow).PathFile.Text;
+                var DirectoryInfo = new DirectoryInfo(FilePath);
 
-            foreach (var directory in DirectoryInfo.GetDirectories())
-                DirectoriesAndFiles.Add(new DirectoryPC(directory));
+                foreach (var directory in DirectoryInfo.GetDirectories())
+                    DirectoriesAndFiles.Add(new DirectoryPC(directory));
 
-            foreach (var FileInfo in DirectoryInfo.GetFiles())
-                DirectoriesAndFiles.Add(new FilePC(FileInfo));
+                foreach (var FileInfo in DirectoryInfo.GetFiles())
+                    DirectoriesAndFiles.Add(new FilePC(FileInfo));
+            }
         }
+        catch { }
     }
 
 
@@ -306,17 +308,21 @@ public class FunctionCommand : ModelOutput
         if (parameter is DirectoryPC directoryPc)
         {
             // FileSystem.DeleteDirectory(directoryPc.FullName, DeleteDirectoryOption.DeleteAllContents);
-
-            FileSystem.DeleteDirectory(directoryPc.FullName, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
-            OpenDirectory();
+            try
+            {
+                FileSystem.DeleteDirectory(directoryPc.FullName, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
+            }catch { }
         }
 
         if (parameter is FilePC filePc)
         {
-            FileSystem.DeleteFile(filePc.FullName);
-            FileSystem.DeleteFile(filePc.FullName, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
-            OpenDirectory();
+            try
+            {
+               // FileSystem.DeleteFile(filePc.FullName);
+                FileSystem.DeleteFile(filePc.FullName, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
+            }catch { }
         }
+        OpenDirectory();
     }
 
     protected void Cut(object parameter)
@@ -351,44 +357,49 @@ public class FunctionCommand : ModelOutput
 
     protected void RenameClose(object parameter)
     {
-        string nameFile = ((MainWindow)Application.Current.MainWindow).TextBoxRename.Text;
-        if (CreateDir == true && EntetyPcDoRename is DirectoryPC dir)
-        {
-            Directory.CreateDirectory(dir.FullName + "\\" + nameFile);
-            CreateDir = false;
-        }
-        else if (CreateFileText == true && EntetyPcDoRename is DirectoryPC dir2)
-        {
-            File.Create(dir2.FullName + "\\" + nameFile + ".txt");
-            CreateFileText = false;
-        }
-        else
-        {
-
-            if (EntetyPcDoRename is DirectoryPC directoryPc)
+        try {
+            string nameFile = ((MainWindow)Application.Current.MainWindow).TextBoxRename.Text;
+            if (CreateDir == true && EntetyPcDoRename is DirectoryPC dir)
             {
-                if (nameFile != directoryPc.Name)
+                Directory.CreateDirectory(dir.FullName + "\\" + nameFile);
+                CreateDir = false;
+            }
+            else if (CreateFileText == true && EntetyPcDoRename is DirectoryPC dir2)
+            {
+                File.Create(dir2.FullName + "\\" + nameFile + ".txt");
+                CreateFileText = false;
+            }
+            else
+            {
+
+                if (EntetyPcDoRename is DirectoryPC directoryPc)
                 {
-                    string curDir = Path.GetDirectoryName(directoryPc.FullName);
-                    Directory.Move(directoryPc.FullName, Path.Combine(curDir, nameFile));
+                    if (nameFile != directoryPc.Name)
+                    {
+                        string curDir = Path.GetDirectoryName(directoryPc.FullName);
+                        Directory.Move(directoryPc.FullName, Path.Combine(curDir, nameFile));
+                        OpenDirectory();
+                    }
+                }
+
+                if (EntetyPcDoRename is FilePC filePc)
+                {
+                    string curDir = Path.GetDirectoryName(filePc.FullName);
+                    try
+                    {
+                        File.Move(filePc.FullName, Path.Combine(curDir, nameFile));
+                    }
+                    catch { }
                     OpenDirectory();
                 }
             }
-
-            if (EntetyPcDoRename is FilePC filePc)
-            {
-                string curDir = Path.GetDirectoryName(filePc.FullName);
-                try
-                {
-                    File.Move(filePc.FullName, Path.Combine(curDir, nameFile));
-                }
-                catch { }
-                OpenDirectory();
-            }
+            IsPanelVisible = false;
+            OpenDirectory();
         }
-        IsPanelVisible = false;
-        OpenDirectory();
-    }
+        catch {
+            RenameClose(null);
+        }
+        }
 
 
     protected void CreateDirectory(object parameter)
@@ -424,6 +435,7 @@ public class FunctionCommand : ModelOutput
             parameter = new DirectoryPC(FilePath);
 
         EntetyPcDoRename = parameter;
+
     }
 
 
