@@ -3,54 +3,52 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:app"
-        xmlns:local2="clr-namespace:C_sharb_voenmeh_coursework.Command"
         mc:Ignorable="d"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-        Title="Проводник" 
-        Height="530" 
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        Title="Проводник"
+        Height="530"
         Width="830"
-        
+
         x:Name="Window"
-        xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf" xmlns:convertores="clr-namespace:C_sharb_voenmeh_coursework.Convertores"
+        xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+        xmlns:convertores="clr-namespace:C_sharb_voenmeh_coursework.Convertores"
         xmlns:dd="urn:gong-wpf-dragdrop"
         xmlns:ui="clr-namespace:C_sharb_voenmeh_coursework"
-        Visibility="Visible" 
-        WindowStyle="SingleBorderWindow" 
-        Background="#FF110202" 
-        Icon="/Resource/Icons/file-manager.ico" 
-        ResizeMode="CanResize" 
-        WindowStartupLocation="CenterScreen" 
-        FontWeight="Normal"
-          >
+        Visibility="Visible"
+        WindowStyle="SingleBorderWindow"
+        Background="#FF110202"
+        Icon="/Resource/Icons/file-manager.ico"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen"
+        FontWeight="Normal">
 
     <Window.InputBindings>
-        <KeyBinding  Command="{Binding CopyCommand}" CommandParameter="{Binding SelectedFileEntity}" Gesture="Ctrl+C" />
-        <KeyBinding  Command="{Binding PasteCommand}" CommandParameter="{Binding SelectedFileEntity}" Gesture="Ctrl+V" />
+        <KeyBinding Command="{Binding CopyCommand}" CommandParameter="{Binding SelectedFileEntity}" Gesture="Ctrl+C" />
+        <KeyBinding Command="{Binding PasteCommand}" CommandParameter="{Binding SelectedFileEntity}" Gesture="Ctrl+V" />
     </Window.InputBindings>
-    
-  
+
 
     <Window.Resources>
-        <convertores:FileEntityToImageConverter x:Key="ToImageConverter"></convertores:FileEntityToImageConverter>
+        <convertores:FileEntityToImageConverter x:Key="ToImageConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
 
         <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
-            <Border Background="{TemplateBinding Background}" 
-                x:Name="Bd" BorderBrush="#141111"
-                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0">
-                <ScrollViewer x:Name="PART_ContentHost"/>
+            <Border Background="{TemplateBinding Background}"
+                    x:Name="Bd" BorderBrush="#141111"
+                    BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0">
+                <ScrollViewer x:Name="PART_ContentHost" />
             </Border>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
-                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                            TargetName="Bd" />
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                 </Trigger>
                 <Trigger Property="Width" Value="Auto">
-                    <Setter Property="MinWidth" Value="0"/>
+                    <Setter Property="MinWidth" Value="0" />
                 </Trigger>
                 <Trigger Property="Height" Value="Auto">
-                    <Setter Property="MinHeight" Value="0"/>
+                    <Setter Property="MinHeight" Value="0" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -61,33 +59,33 @@
     <Grid Background="#090d24">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="30" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="180" ></ColumnDefinition>
-            <ColumnDefinition Width="104*"></ColumnDefinition>
-            <ColumnDefinition Width="484*"/>
-            <ColumnDefinition Width="9*"/>
-            <ColumnDefinition Width="12*"/>
-            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="180" />
+            <ColumnDefinition Width="104*" />
+            <ColumnDefinition Width="484*" />
+            <ColumnDefinition Width="9*" />
+            <ColumnDefinition Width="12*" />
+            <ColumnDefinition Width="11*" />
         </Grid.ColumnDefinitions>
 
 
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
-            <Button Width="50" Height="30" FontSize="15px" Content="&lt;-" Command="{Binding MoveBackCommand}"></Button>
-            <Button Width="50" Height="30" FontSize="15px" Content="-&gt;" Command="{Binding MoveForwardCommand}"></Button>
-            <Button Width="50" Height="30" FontSize="15px" Content="O" Command="{Binding CloseCommand}"></Button>
+            <Button Width="50" Height="30" FontSize="15px" Content="&lt;-" Command="{Binding MoveBackCommand}" />
+            <Button Width="50" Height="30" FontSize="15px" Content="-&gt;" Command="{Binding MoveForwardCommand}" />
+            <Button Width="50" Height="30" FontSize="15px" Content="O" Command="{Binding CloseCommand}" />
         </StackPanel>
 
-        <Grid Grid.Row="1" 
-              Grid.Column="0" 
-              Grid.RowSpan="2" >
-            
-            <ListBox Background="#090d24" 
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              Grid.RowSpan="2">
+
+            <ListBox Background="#090d24"
                      BorderBrush="#050714"
                      BorderThickness="0,0,5,0"
                      ItemsSource="{Binding DirectoriesAndFilesLeftPanel}"
@@ -95,96 +93,124 @@
                      dd:DragDrop.IsDropTarget="True"
                      dd:DragDrop.IsDragSource="True"
                      dd:DragDrop.DropHandler="{x:Static ui:DragDrop.Instance}">
-            
-
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-                    <Setter Property="Padding" Value="8"/>
-                    <Setter Property="SnapsToDevicePixels" Value="True"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ClipToBounds="{TemplateBinding ClipToBounds}" Margin="{TemplateBinding Margin}">
-                                    <Grid>
-                                        <Border x:Name="MouseOverBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" Opacity="0"/>
-                                        <Border x:Name="SelectedBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" Opacity="0"/>
-                                        <wpf:Ripple x:Name="Ripple" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" Focusable="False" Feedback="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" RecognizesAccessKey="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                    </Grid>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Opacity" Value=".56"/>
-                                    </Trigger>
-                                    <DataTrigger Binding="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource Self}}" Value="False">
-                                        <Setter Property="Visibility" TargetName="MouseOverBorder" Value="Collapsed"/>
-                                        <Setter Property="Feedback" TargetName="Ripple" Value="Transparent"/>
-                                        <Setter Property="Visibility" TargetName="SelectedBorder" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-                    <!--<Setter Value="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>-->
-                </Style>
-            </ListBox.ItemContainerStyle>
 
 
-            <b:Interaction.Triggers>
-                <b:EventTrigger EventName="MouseDoubleClick">
-                    <b:InvokeCommandAction Command="{Binding OpenCommand}"
-                                CommandParameter="{Binding SelectedFileEntity}"></b:InvokeCommandAction>
-                </b:EventTrigger>
-            </b:Interaction.Triggers>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="HorizontalContentAlignment"
+                                Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                        <Setter Property="Padding" Value="8" />
+                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            ClipToBounds="{TemplateBinding ClipToBounds}"
+                                            Margin="{TemplateBinding Margin}">
+                                        <Grid>
+                                            <Border x:Name="MouseOverBorder"
+                                                    Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                                    Opacity="0" />
+                                            <Border x:Name="SelectedBorder"
+                                                    Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                                    Opacity="0" />
+                                            <wpf:Ripple x:Name="Ripple"
+                                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                        Content="{TemplateBinding Content}"
+                                                        ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                                        Focusable="False"
+                                                        Feedback="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                        Padding="{TemplateBinding Padding}" RecognizesAccessKey="False"
+                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                        </Grid>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value=".56" />
+                                        </Trigger>
+                                        <DataTrigger
+                                            Binding="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource Self}}"
+                                            Value="False">
+                                            <Setter Property="Visibility" TargetName="MouseOverBorder"
+                                                    Value="Collapsed" />
+                                            <Setter Property="Feedback" TargetName="Ripple" Value="Transparent" />
+                                            <Setter Property="Visibility" TargetName="SelectedBorder" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="VerticalContentAlignment"
+                                Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                        <!--<Setter Value="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>-->
+                    </Style>
+                </ListBox.ItemContainerStyle>
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
 
-                        <Grid  Grid.Column="0" Margin="10,10"  Width="30" Height="35">
-                            <Image  Source="{Binding .,Converter={StaticResource ToImageConverter}}"></Image>
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="MouseDoubleClick">
+                        <b:InvokeCommandAction Command="{Binding OpenCommand}"
+                                               CommandParameter="{Binding SelectedFileEntity}" />
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="0" Margin="10,10" Width="30" Height="35">
+                                <Image Source="{Binding .,Converter={StaticResource ToImageConverter}}" />
+                            </Grid>
+
+                            <TextBlock Foreground="#e6e8f2" VerticalAlignment="Center" FontSize="14" Grid.Column="1"
+                                       Text="{Binding Name}" />
                         </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
 
-                        <TextBlock Foreground="#e6e8f2" VerticalAlignment="Center" FontSize="14" Grid.Column="1"  Text="{Binding Name}"></TextBlock>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+            </ListBox>
 
-        </ListBox>   
-            
         </Grid>
-        
-        <Grid Grid.Row="3" 
+
+        <Grid Grid.Row="3"
               Grid.Column="0"
               HorizontalAlignment="Center"
               VerticalAlignment="Center">
             <Image Source="{Binding PathIcon}" />
             <MediaElement Source="{Binding PathIcon}" />
-            <TextBox BorderBrush="#090d24" BorderThickness="2" Foreground="#e6e8f2"  Template="{StaticResource TextBoxBaseControlTemplate}" Text="{Binding TextInPreview}"></TextBox>
-            <RichTextBox x:Name="rtb"  ></RichTextBox>
+            <TextBox BorderBrush="#090d24" BorderThickness="2" Foreground="#e6e8f2"
+                     Template="{StaticResource TextBoxBaseControlTemplate}" Text="{Binding TextInPreview}" />
+            <RichTextBox x:Name="rtb" />
         </Grid>
-       
-        <TextBox Grid.Row="0" 
-                 Grid.Column="1" 
-                 Background="#030202" 
+
+        <TextBox Grid.Row="0"
+                 Grid.Column="1"
+                 Background="#030202"
                  Foreground="#e6e8f2"
-                 Text="{Binding FilePath}" 
+                 Text="{Binding FilePath}"
                  x:Name="PathFile" Grid.ColumnSpan="5">
 
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="MouseDoubleClick">
                     <b:InvokeCommandAction Command="{Binding DataContext.OpenCommand,ElementName=Window}"
-                                           CommandParameter="{Binding Text,ElementName=PathFile}">
-                    </b:InvokeCommandAction>
+                                           CommandParameter="{Binding Text,ElementName=PathFile}" />
                 </b:EventTrigger>
             </b:Interaction.Triggers>
+
+            <TextBox.InputBindings>
+                <KeyBinding Command="{Binding DataContext.OpenCommand,ElementName=Window}"
+                            CommandParameter="{Binding Text,ElementName=PathFile}" Key="Enter" />
+            </TextBox.InputBindings>
 
         </TextBox>
 
@@ -199,46 +225,58 @@
 
 
         <ListBox x:Name="ListBoxDirectoriesAndFiles"
-                Grid.Column="1" 
+                 Grid.Column="1"
                  Grid.Row="1"
                  Grid.RowSpan="3"
                  ItemsSource="{Binding DirectoriesAndFiles}"
-                 SelectedItem="{Binding SelectedFileEntity}" 
+                 SelectedItem="{Binding SelectedFileEntity}"
                  Grid.ColumnSpan="5"
-                dd:DragDrop.IsDropTarget="True"
-                dd:DragDrop.IsDragSource="True"
-                dd:DragDrop.DropHandler="{x:Static ui:DragDrop.Instance}"
-                 >
-            
+                 dd:DragDrop.IsDropTarget="True"
+                 dd:DragDrop.IsDragSource="True"
+                 dd:DragDrop.DropHandler="{x:Static ui:DragDrop.Instance}">
+
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-                    <Setter Property="Padding" Value="8"/>
-                    <Setter Property="SnapsToDevicePixels" Value="True"/>
-                    <Setter Property="Width" Value="200"/>
-                    <Setter Property="Height" Value="auto"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="Margin" Value="3"/>
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                    <Setter Property="Padding" Value="8" />
+                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                    <Setter Property="Width" Value="200" />
+                    <Setter Property="Height" Value="auto" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="Margin" Value="3" />
 
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                 <Border x:Name="Bd"
-                                        Background="{TemplateBinding Background}" 
+                                        Background="{TemplateBinding Background}"
                                         BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}" 
-                                        ClipToBounds="{TemplateBinding ClipToBounds}" 
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        ClipToBounds="{TemplateBinding ClipToBounds}"
                                         Margin="{TemplateBinding Margin}"
                                         CornerRadius="5">
 
 
                                     <Grid>
-                                        <Border x:Name="MouseOverBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" Opacity="0"/>
-                                        <Border x:Name="SelectedBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" Opacity="0"/>
-                                        <wpf:Ripple x:Name="Ripple" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" Focusable="False" Feedback="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" RecognizesAccessKey="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        <Border x:Name="MouseOverBorder"
+                                                Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                                Opacity="0" />
+                                        <Border x:Name="SelectedBorder"
+                                                Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                                Opacity="0" />
+                                        <wpf:Ripple x:Name="Ripple" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    Content="{TemplateBinding Content}"
+                                                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                                    Focusable="False"
+                                                    Feedback="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}"
+                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    Padding="{TemplateBinding Padding}" RecognizesAccessKey="False"
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
 
                                     </Grid>
 
@@ -247,79 +285,74 @@
 
                                     <MultiTrigger>
                                         <MultiTrigger.Conditions>
-                                                                        
+
                                             <!--<Condition Property="Selector.IsSelectionActive" Value="False" />-->
                                         </MultiTrigger.Conditions>
 
-                                        <Setter TargetName="Bd" Property="Background" Value="#020b38"></Setter>
+                                        <Setter TargetName="Bd" Property="Background" Value="#020b38" />
 
                                     </MultiTrigger>
 
                                     <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Opacity" Value=".56"/>
+                                        <Setter Property="Opacity" Value=".56" />
                                     </Trigger>
-                                    <DataTrigger Binding="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource Self}}" Value="False">
-                                        <Setter Property="Visibility" TargetName="MouseOverBorder" Value="Collapsed"/>
-                                        <Setter Property="Feedback" TargetName="Ripple" Value="Transparent"/>
-                                        <Setter Property="Visibility" TargetName="SelectedBorder" Value="Collapsed"/>
+                                    <DataTrigger
+                                        Binding="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource Self}}"
+                                        Value="False">
+                                        <Setter Property="Visibility" TargetName="MouseOverBorder" Value="Collapsed" />
+                                        <Setter Property="Feedback" TargetName="Ripple" Value="Transparent" />
+                                        <Setter Property="Visibility" TargetName="SelectedBorder" Value="Collapsed" />
                                     </DataTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                    <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                    <Setter Property="VerticalContentAlignment"
+                            Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
                     <!--<Setter Value="{Binding (wpf:ListBoxItemAssist.ShowSelection), RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>-->
                 </Style>
             </ListBox.ItemContainerStyle>
 
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel>
-
-                    </WrapPanel>
+                    <WrapPanel />
                 </ItemsPanelTemplate>
-                
+
             </ListBox.ItemsPanel>
 
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="MouseDoubleClick">
                     <b:InvokeCommandAction Command="{Binding OpenCommand}"
-                                CommandParameter="{Binding SelectedFileEntity}"></b:InvokeCommandAction>
+                                           CommandParameter="{Binding SelectedFileEntity}" />
                 </b:EventTrigger>
-          
                 <b:EventTrigger EventName="MouseLeftButtonUp">
                     <b:InvokeCommandAction Command="{Binding ClickCommand}"
-                                           CommandParameter="{Binding SelectedFileEntity}"></b:InvokeCommandAction>
+                                           CommandParameter="{Binding SelectedFileEntity}" />
                 </b:EventTrigger>
-
-
-                <!--<b:EventTrigger EventName="MouseLeave">
-                    <b:InvokeCommandAction Command="{Binding UpdateFilePathCommand}"
-                                CommandParameter="{Binding SelectedFileEntity}"></b:InvokeCommandAction>
-                    </b:EventTrigger>-->
-
-                </b:Interaction.Triggers>
+            </b:Interaction.Triggers>
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            <ColumnDefinition Width="auto"></ColumnDefinition>
-                            
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <Grid  Grid.Column="0" Margin="10,10"  Width="30" Height="35">
-                            <Image VerticalAlignment="Top" Source="{Binding .,Converter={StaticResource ToImageConverter}}"></Image>
+                        <Grid Grid.Column="0" Margin="10,10" Width="30" Height="35">
+                            <Image VerticalAlignment="Top"
+                                   Source="{Binding .,Converter={StaticResource ToImageConverter}}" />
 
-                           
+
                         </Grid>
 
-                        <TextBlock x:Name="nnn" Foreground="#e6e8f2" FontSize="14" Height="20" Grid.Column="1" Text="{Binding Name}" />
+                        <TextBlock x:Name="nnn" Foreground="#e6e8f2" FontSize="14" Height="20" Grid.Column="1"
+                                   Text="{Binding Name}" />
                         <!--<Button Content="Enable">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}">
@@ -333,7 +366,6 @@
                             </Button.Style>
                         </Button>-->
 
-                     
 
                     </Grid>
                 </DataTemplate>
@@ -341,34 +373,44 @@
 
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Копировать" Command="{Binding CopyCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
-                    <MenuItem Header="Вставить" Command="{Binding PasteCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
-                    <MenuItem Header="Вырезать" Command="{Binding CutCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
-                    <MenuItem Header="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
-                    <MenuItem Header="Переименовать" Command="{Binding RenameCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
-                    <MenuItem Header="Создать папку" Command="{Binding CreateDirectoryCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
-                    <MenuItem Header="Создать текстовый файл" Command="{Binding CreateTextFileCommand}" CommandParameter="{Binding SelectedFileEntity}"></MenuItem>
+                    <MenuItem Header="Копировать" Command="{Binding CopyCommand}"
+                              CommandParameter="{Binding SelectedFileEntity}" />
+                    <MenuItem Header="Вставить" Command="{Binding PasteCommand}"
+                              CommandParameter="{Binding SelectedFileEntity}" />
+                    <MenuItem Header="Вырезать" Command="{Binding CutCommand}"
+                              CommandParameter="{Binding SelectedFileEntity}" />
+                    <MenuItem Header="Удалить" Command="{Binding DeleteCommand}"
+                              CommandParameter="{Binding SelectedFileEntity}" />
+                    <MenuItem Header="Переименовать" Command="{Binding RenameCommand}"
+                              CommandParameter="{Binding SelectedFileEntity}" />
+
+                    <MenuItem Header="Создать">
+                        <MenuItem Header="Папку" Command="{Binding CreateDirectoryCommand}"
+                                  CommandParameter="{Binding SelectedFileEntity}" />
+                        <MenuItem Header="Текстовый файл" Command="{Binding CreateTextFileCommand}"
+                                  CommandParameter="{Binding SelectedFileEntity}" />
+                    </MenuItem>
                 </ContextMenu>
             </ListBox.ContextMenu>
 
         </ListBox>
 
 
-        <Border Width="180px" Height="25px" Background="#dfdff0" HorizontalAlignment ="Right" CornerRadius="20,20,20,20" Grid.Row="3" Grid.Column="2"
+        <Border Width="180px" Height="25px" Background="#dfdff0" HorizontalAlignment="Right" CornerRadius="20,20,20,20"
+                Grid.Row="3" Grid.Column="2"
                 Visibility="{Binding IsPanelVisible, Converter={StaticResource BooleanToVisibility}}">
 
-            <TextBox  
-                 x:Name="TextBoxRename"
-                 Margin="15,0,15,0"
-                 VerticalAlignment="Center"
-                 Foreground="#c7621a"
-                 Text="{Binding Name}">
+            <TextBox
+                x:Name="TextBoxRename"
+                Margin="15,0,15,0"
+                VerticalAlignment="Center"
+                Foreground="#c7621a"
+                Text="{Binding Name}">
 
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="MouseDoubleClick">
                         <b:InvokeCommandAction Command="{Binding DataContext.RenameCloseCommand ,ElementName=Window}"
-                                           CommandParameter="{Binding Text,ElementName= Text}">
-                        </b:InvokeCommandAction>
+                                               CommandParameter="{Binding Text,ElementName= Text}" />
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
 
@@ -386,14 +428,13 @@
 
                 <TextBox.InputBindings>
                     <KeyBinding Command="{Binding DataContext.RenameCloseCommand ,ElementName=Window}"
-                                           CommandParameter="{Binding Text,ElementName= Text}" Key="Enter" />
+                                CommandParameter="{Binding ElementName= Text}" Key="Enter" />
                 </TextBox.InputBindings>
 
 
             </TextBox>
 
         </Border>
-
 
 
     </Grid>

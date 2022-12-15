@@ -15,7 +15,6 @@ namespace app
 
         public MainApp()
         {
-            IsEnabled = true;
             CallLeftPanel();
             OpenDirectory();
          }

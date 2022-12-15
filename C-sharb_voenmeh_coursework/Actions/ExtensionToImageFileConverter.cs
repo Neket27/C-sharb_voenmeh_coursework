@@ -7,7 +7,8 @@ namespace C_sharb_voenmeh_coursework.Actions
 {
     internal static class Ico
     {
-        private static Icons? Icons=Icons.Open("icons.json");
+        private static Icons? Icons = Icons.Open("icons.json");
+
         public static string GetImagePath(string extension)
         {
             string applicationDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -18,8 +19,7 @@ namespace C_sharb_voenmeh_coursework.Actions
                 return new FileInfo(Path.Combine(applicationDirectory, "Resource/Icons", name)).FullName;
             }
 
-           // return new FileInfo(Path.Combine(applicationDirectory, "Resource/Icons", "folder2.jpg"));
-           return null;
+            return null;
         }
     }
 
@@ -41,21 +41,5 @@ namespace C_sharb_voenmeh_coursework.Actions
 
             return new Icons();
         }
-
-        // public static void Save(Icons  dictionaryIcons, string path)
-        // {
-        //     JsonSerializerOptions options = new JsonSerializerOptions()
-        //     {
-        //         WriteIndented = true,
-        //     };
-        //     try
-        //     {
-        //         string json = JsonSerializer.Serialize(dictionaryIcons, options);
-        //         File.WriteAllText(path, json);
-        //     }
-        //     catch (Exception e)
-        //     {
-        //     }
-        // }
     }
 }

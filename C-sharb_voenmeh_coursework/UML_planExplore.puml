@@ -147,6 +147,10 @@ class Command
 - ICommand PasteCommand
 - ICommand CutCommand
 - ICommand DeleteCommand
+- ICommand RenameCommand
+- ICommand RenameCloseCommand
+- ICommand CreateDirectoryCommand
+- CreateTextFileCommand 
 - DelegateCommand MoveBackCommand
 - DelegateCommand MoveForwardCommand
 
@@ -160,7 +164,11 @@ class Command
 class FunctionCommand
 {
 - FileInfo SaveCopyFile
+- DirectoryInfo SaveCopyDirectory
 - bool FlagCut
+- bool CreateDir
+- bool CreateFileText
+- object EntetyPcDoRename
 - FilePC SaveCutFile
 - IDirectoryHistory _history
 
@@ -173,6 +181,10 @@ class FunctionCommand
 - void Paste(object parameter)
 - void Delete(object parameter)
 - void Cut(object parameter)
+- void Rename(object parameter)
+- void RenameClose(object parameter)
+- void CreateDirectory(object parameter)
+- void CreateTextFile(object parameter)
 }
 
 class ModelOutput
@@ -184,6 +196,7 @@ class ModelOutput
 - string Name
 - string PathIcon
 - string TextInPreview
+- bool IsPanelVisible
 }
 class MainApp 
 {

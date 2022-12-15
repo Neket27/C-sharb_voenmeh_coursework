@@ -15,7 +15,7 @@ namespace C_sharb_voenmeh_coursework.Command
 
         #region Constructors
 
-        public DelegateCommand(Action<object> execute, Predicate<object> canExecute =null)
+        public DelegateCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -34,7 +34,8 @@ namespace C_sharb_voenmeh_coursework.Command
 
         public void Execute(object? parameter)
         {
-            _execute?.Invoke(parameter); // (Invoke передаёт в поток фунции параметр.) Invoke вызывает фунцию хранящуюся в _execute с параметром
+            _execute?.Invoke(
+                parameter); // (Invoke передаёт в поток фунции параметр.) Invoke вызывает фунцию хранящуюся в _execute с параметром
         }
 
         public event EventHandler? CanExecuteChanged;

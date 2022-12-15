@@ -6,21 +6,7 @@ namespace app.models
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-
-
-        //private bool _isEnabled;
-
-        //public bool IsEnabled
-        //{
-        //    get { return _isEnabled; }
-        //    set
-        //    {
-        //        _isEnabled = value;
-        //        OnPropertyChanged("IsEnabled");
-        //    }
-        //}
-
-
+        
         #region Events
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -36,7 +22,6 @@ namespace app.models
      
 
         #endregion
-
-
+        
     }
 }

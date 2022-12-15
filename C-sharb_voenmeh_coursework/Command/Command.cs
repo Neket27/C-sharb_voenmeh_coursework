@@ -5,20 +5,18 @@ using C_sharb_voenmeh_coursework.History;
 
 namespace C_sharb_voenmeh_coursework.Command;
 
-public class Command: FunctionCommand
+public class Command : FunctionCommand
 {
-  #region Commands
+    #region Commands
     public ICommand OpenCommand { get; set; }
     public ICommand ClickCommand { get; set; }
     public DelegateCommand CloseCommand { get; set; }
-
     public ICommand CopyCommand { get; set; }
     public ICommand PasteCommand { get; set; }
     public ICommand CutCommand { get; set; }
     public ICommand DeleteCommand { get; set; }
     public ICommand RenameCommand { get; set; }
     public ICommand RenameCloseCommand { get; set; }
-    public ICommand UpdateFilePathCommand { get; set; }
     public ICommand CreateDirectoryCommand { get; set; }
     public ICommand CreateTextFileCommand { get; set; }
     public DelegateCommand MoveBackCommand { get; set; }
@@ -28,11 +26,12 @@ public class Command: FunctionCommand
 
 
     #region Constructors
+
     public Command()
     {
         History = new DirectoryHistory("Этот компьютер", "Этот компьютер");
         OpenCommand = new DelegateCommand(Open);
-        CloseCommand = new DelegateCommand(Close,OnCanClose);
+        CloseCommand = new DelegateCommand(Close, OnCanClose);
         ClickCommand = new Explorer.Shared.ViewModels.DelegateCommand(Click);
         MoveBackCommand = new DelegateCommand(OnMoveBack, OnCanMoveBack);
         MoveForwardCommand = new DelegateCommand(OnMoveForward, OnCanMoveForward);
@@ -43,7 +42,6 @@ public class Command: FunctionCommand
         CutCommand = new DelegateCommand(Cut);
         RenameCommand = new DelegateCommand(Rename);
         RenameCloseCommand = new DelegateCommand(RenameClose);
-        UpdateFilePathCommand = new DelegateCommand(UpdateFilePath);
         CreateDirectoryCommand = new DelegateCommand(CreateDirectory);
         CreateTextFileCommand = new DelegateCommand(CreateTextFile);
 
@@ -56,22 +54,21 @@ public class Command: FunctionCommand
     }
 
     #endregion
-    
+
     # region Function
-    
+
     private void History_HistoryChanged(object? sender, EventArgs e)
     {
         MoveBackCommand?.RaiseCanExecuteChanged();
         MoveForwardCommand?.RaiseCanExecuteChanged();
         CloseCommand?.RaiseCanExecuteChanged();
-        
     }
 
     private bool OnCanMoveForward(object obj) => History.CanMoveForward;
 
     private bool OnCanMoveBack(object obj)
     {
-        return  History.CanMoveBack;
+        return History.CanMoveBack;
     }
 
     private bool OnCanClose(object obj) => History.CanMoveClose;
@@ -93,8 +90,6 @@ public class Command: FunctionCommand
         Name = current.DirectoryPathName;
         OpenDirectory();
     }
-    
+
     #endregion
-    
-    
 }
